@@ -1,22 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class GameSceneController : MonoSingleton<GameSceneController>
 {
     public List<ModelController> Models = new List<ModelController>();
-    public List<Shader> Shaders;
+    //list of all shaders
+    private List<Shader> Shaders = new List<Shader>();
     public ModelController CurrentModel;
     // Start is called before the first frame update
     void Start()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+/// <summary>
+/// Adds a shader to the list of shader if it is not there and returns bool
+/// </summary>
+/// <param name="shader"></param>
+/// <returns></returns>
+    private bool AddNewShader(Shader shader)
     {
+        if (Shaders.Contains(shader)) return false;
+        Shaders.Add(shader);
+        return true;
+    }
+
+    /// <summary>
+    /// Creates a new material off a specific shader for all objects
+    /// </summary>
+    private void CreateNewMaterials(Shader shader)
+    {
+        foreach (var model in Models)
+        {
+            model.CreateMaterial(shader);
+        }
+    }
+    
+    public void OnButtonPressed(Shader shader)
+    {
+        if (!AddNewShader(shader)) return;
+        CreateNewMaterials(shader);
+    }
+
+}
+//editor
+[CustomEditor(typeof(GameSceneController))]
+public class GameSceneScriptEditor : Editor
+{
+    public Shader NewShader;
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        GameSceneController myTarget = (GameSceneController)target;
         
+
+            if(GUILayout.Button("Add new shader and create materials") && NewShader!= null)
+            {
+                myTarget.OnButtonPressed(NewShader);
+                NewShader = null;
+            }
+        
+
     }
 }
 
