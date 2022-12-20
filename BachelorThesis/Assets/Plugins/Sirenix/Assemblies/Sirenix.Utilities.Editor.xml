@@ -5690,6 +5690,16 @@
             <param name="wide">If set to <c>true</c> the message box will be wide.</param>
             <returns>State of isFolded.</returns>
         </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.IconMessageBox(System.String,Sirenix.OdinInspector.SdfIconType,System.Nullable{UnityEngine.Color},UnityEngine.GUIStyle,System.Action{UnityEditor.GenericMenu})">
+            <summary>
+            Draws a message box with the specified icon.
+            </summary>
+            <param name="message">The message to be displayed.</param>
+            <param name="iconType">The icon to be displayed.</param>
+            <param name="color">The color of the icon.</param>
+            <param name="messageBoxStyle">The style of the message box.</param>
+            <param name="onContextClick">The action to be invoked if the message box is right-clicked.</param>
+        </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.HorizontalLineSeparator(System.Int32)">
             <summary>
             Draws a horizontal line separator.
@@ -5827,6 +5837,102 @@
             <param name="width">The width of the button.</param>
             <param name="height">The height of the button.</param>
             <returns><c>true</c> while the button is active. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(System.String,System.Single,Sirenix.OdinInspector.SdfIconType,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="label">The button's label.</param>
+            <param name="height">The button's height.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.GUIContent,System.Single,Sirenix.OdinInspector.SdfIconType,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="label">The button's label.</param>
+            <param name="height">The button's height.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(System.String,System.Single,UnityEngine.Texture,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="label">The button's label.</param>
+            <param name="height">The button's height.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.GUIContent,System.Single,UnityEngine.Texture,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="label">The button's label.</param>
+            <param name="height">The button's height.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.Rect,System.String,Sirenix.OdinInspector.SdfIconType,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="rect">The button's rect.</param>
+            <param name="label">The button's label.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.Rect,System.String,UnityEngine.Texture,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="rect">The button's rect.</param>
+            <param name="label">The button's label.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.Rect,UnityEngine.GUIContent,Sirenix.OdinInspector.SdfIconType,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="rect">The button's rect.</param>
+            <param name="label">The button's label.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.Texture,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a SDF icon button.
+            </summary>
+            <param name="rect">The button's rect.</param>
+            <param name="label">The button's label.</param>
+            <param name="icon">The button's icon.</param>
+            <param name="iconAlignment">The button's icon alignment. ButtonIconAlignment.LeftOfText by default.</param>
+            <param name="style">The button's style.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.CalculateMinimumSDFIconButtonWidth(UnityEngine.GUIContent,System.Single)">
+            <summary>
+            Calculates the minimum needed space for a SDF icon button where the label is still visible.
+            </summary>
+            <param name="label">The label of the SDF icon button.</param>
+            <param name="buttonHeight">The height of the SDF icon button.</param>
+            <returns>The minimum width of the SDF icon button.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarButton(Sirenix.Utilities.Editor.EditorIcon,System.Boolean)">
             <summary>
@@ -7121,6 +7227,11 @@
             Draw this one manually with: new Color(1, 1, 1, EditorGUIUtility.isProSkin ? 0.25f : 0.45f)
             </summary>
         </member>
+        <member name="F:Sirenix.Utilities.Editor.SirenixGUIStyles.SDFIconButtonLabelStyle">
+            <summary>
+            SDFIconButton Label.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.Editor.InstanceCreator">
             <summary>
             Not yet documented.
@@ -7568,16 +7679,6 @@
             A utility class for finding types in various asssembly.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.#cctor">
-            <summary>
-            Initializes the <see cref="T:Sirenix.Utilities.AssemblyUtilities"/> class.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.Load(System.Reflection.Assembly[])">
-            <summary>
-            Re-scans the entire AppDomain.
-            </summary>
-        </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAllAssemblies">
             <summary>
             Gets an <see cref="T:Sirenix.Utilities.ImmutableList"/> of all assemblies in the current <see cref="T:System.AppDomain"/>.
@@ -7591,17 +7692,6 @@
             <param name="assembly">The assembly.</param>
             <returns>The <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> for a given assembly.</returns>
             <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is null.</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypeByCachedFullName(System.String)">
-            <summary>
-            Gets the type.
-            </summary>
-            <param name="fullName">The full name of the type without any assembly information.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetType(System.String)">
-            <summary>
-            Gets the type.
-            </summary>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.IsDependentOn(System.Reflection.Assembly,System.Reflection.Assembly)">
             <summary>
@@ -7639,6 +7729,12 @@
             </summary>
             <param name="assembly">The assembly.</param>
             <returns>The full directory path in which a given assembly is located, or <c>Null</c> if no file path was found.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypeByCachedFullName(System.String)">
+            <summary>
+            Gets the type.
+            </summary>
+            <param name="fullName">The full name of the type, with or without any assembly information.</param>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypes(Sirenix.Utilities.AssemblyTypeFlags)">
             <summary>
@@ -7884,6 +7980,13 @@
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.UnityEditorEventUtility.DelayAction(System.Action)">
+            <summary>
+            Sometimes, an idiot overrides a delay action subscription to <see cref="F:UnityEditor.EditorApplication.delayCall"/>,
+            which can be done because the people at Unity didn't know what events were once upon a time.
+            This method subscribes to a lot of different callbacks, in the hopes of catching at least one.
+            </summary>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.UnityEditorEventUtility.DelayAction(System.Action,System.Boolean)">
             <summary>
             Sometimes, an idiot overrides a delay action subscription to <see cref="F:UnityEditor.EditorApplication.delayCall"/>,
             which can be done because the people at Unity didn't know what events were once upon a time.

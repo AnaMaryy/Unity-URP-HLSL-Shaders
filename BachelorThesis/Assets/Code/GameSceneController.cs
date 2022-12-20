@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -8,8 +9,11 @@ public class GameSceneController : MonoSingleton<GameSceneController>
 {
     public List<ModelController> Models = new List<ModelController>();
     //list of all shaders
-    private List<Shader> Shaders = new List<Shader>();
+    public List<Shader> Shaders = new List<Shader>();
     public ModelController CurrentModel;
+    [Title("Create new materials from shader")]
+    public Shader NewShader;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,10 +43,11 @@ public class GameSceneController : MonoSingleton<GameSceneController>
         }
     }
     
-    public void OnButtonPressed(Shader shader)
+    public void OnButtonPressed()
     {
-        if (!AddNewShader(shader)) return;
-        CreateNewMaterials(shader);
+        if (!AddNewShader(NewShader)) return;
+        CreateNewMaterials(NewShader);
+        NewShader = null;
     }
 
 }
@@ -50,17 +55,13 @@ public class GameSceneController : MonoSingleton<GameSceneController>
 [CustomEditor(typeof(GameSceneController))]
 public class GameSceneScriptEditor : Editor
 {
-    public Shader NewShader;
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
         GameSceneController myTarget = (GameSceneController)target;
-        
-
-            if(GUILayout.Button("Add new shader and create materials") && NewShader!= null)
+        if(GUILayout.Button("Create materials") && myTarget.NewShader!= null)
             {
-                myTarget.OnButtonPressed(NewShader);
-                NewShader = null;
+                myTarget.OnButtonPressed();
             }
         
 
