@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Code;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -18,7 +19,7 @@ public class SceneController : MonoBehaviour {
 
 	public SceneName Name;
 
-	public List<Transform> CameraAnchors;
+	public List<CameraAnchorController> CameraAnchors;
 	private int _currentAchor = 0;
 
 	public void Init(FPSController fps) {
