@@ -11,16 +11,14 @@ public class SceneManager : MonoSingleton<SceneManager> {
 	public Camera UiCamera;
 	public FPSController FPSController;
 	[SerializeField] private Transform _SceneParent;
-
-	public List<SceneController> Scenes;
-	private Dictionary<SceneController.SceneName, SceneController> _dictScenes;
-
 	
-	public SceneController.SceneName CurrentSceneName; // can change scene in run mode :)
+	public SceneController.SceneName CurrentSceneName; // can change scene in Editor
 	private SceneController.SceneName _currentSceneName;
 	[HideInInspector] public SceneController CurrentSceneInstance;
 
-	[HideInInspector] public bool CanMove = true;
+	public List<SceneController> Scenes;
+	private Dictionary<SceneController.SceneName, SceneController> _dictScenes;
+	
 
 	protected override void Awake() {
 		base.Awake();
@@ -37,7 +35,8 @@ public class SceneManager : MonoSingleton<SceneManager> {
 		}
 	}
 
-	private void LoadScene(SceneController.SceneName sceneName) {
+	public void LoadScene(SceneController.SceneName sceneName) {
+		//load scene
 		if (_dictScenes.ContainsKey(sceneName)) {
 			if (CurrentSceneInstance != null) {
 				DestroyImmediate(CurrentSceneInstance.gameObject);
@@ -48,6 +47,9 @@ public class SceneManager : MonoSingleton<SceneManager> {
 		} else {
 			throw new Exception("There is no scene with the name " + sceneName);
 		}
+		//teleport player to first camera pos
+		var cameraAnchor = CurrentSceneInstance.CameraAnchors[0];
+		FPSController.Teleport(cameraAnchor.transform.position,cameraAnchor.CameraData );
 	}
 
 	void OnValidate() {

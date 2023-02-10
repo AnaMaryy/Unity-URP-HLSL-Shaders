@@ -18,19 +18,16 @@ public class FPSController : MonoBehaviour {
 		if (Input.GetKey("1")) {
 			var cameraAnchor = SceneManager.Instance.CurrentSceneInstance.CameraAnchors[0];
 			Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
-			LockInPlace(false);
 			return;
 		}
 		if (Input.GetKey("2")) {
 			var cameraAnchor = SceneManager.Instance.CurrentSceneInstance.CameraAnchors[1];
 			Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
-			LockInPlace(false);
 			return;
 		}
 		if (Input.GetKey("3")) {
 			var cameraAnchor = SceneManager.Instance.CurrentSceneInstance.CameraAnchors[2];
 			Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
-			LockInPlace(false);
 			return;
 		}
 
@@ -58,14 +55,19 @@ public class FPSController : MonoBehaviour {
 		CharacterController.Move(direction * Speed * Time.deltaTime);
 	}
 
+	
+	public void Teleport(Vector3 endPos, CameraData cameraData) {
+		LockInPlace(false);
+
+		transform.localRotation= Quaternion.identity;
+		transform.position = endPos;
+		MouseLook.Teleport(cameraData);
+	}
+
 	private void LockInPlace(bool canMove) {
 		_canMove = canMove;
 		MouseLook.LockInPlace(_canMove);
 	}
 
-	private void Teleport(Vector3 endPos, CameraData cameraData) {
-		transform.position = endPos;
-		MouseLook.Teleport(cameraData);
-	}
 
 }

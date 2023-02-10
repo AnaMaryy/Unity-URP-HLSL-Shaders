@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df0097fbe19727449089255ad2a941e, type: 3}
   m_Name: FirstCameraAnchor
   m_EditorClassIdentifier: 
-  CameraRotation: {x: 0, y: 0, z: 0}
+  CameraRotation: {x: 30, y: -136.25, z: 0}

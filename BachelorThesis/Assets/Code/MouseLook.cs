@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.PlayerLoop;
 
 public class MouseLook : MonoBehaviour {
@@ -7,7 +8,7 @@ public class MouseLook : MonoBehaviour {
 	public Transform PlayerBody;
 
 	private float xRotation = 0f;
-	private bool _canMove;
+	private bool _canMove = true;
 
 	private void Start() {
 		//Cursor.lockState = CursorLockMode.Locked;
@@ -22,19 +23,21 @@ public class MouseLook : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!_canMove) return;
-		
+		//Ray ray = SceneManager.Instance.UiCamera.ScreenPointToRay(Input.mousePosition);
+		//Physics.Raycast(ray, out RaycastHit hit, 100, LayerMask.GetMask("UI"))
+
+		if (!_canMove || EventSystem.current.IsPointerOverGameObject()) { ;
+			return;
+		}
+
 		float mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
 		float mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
 
 		xRotation -= mouseY;
 		xRotation = Mathf.Clamp(xRotation, -90, 90f);
-		transform.localRotation = Quaternion.Euler(xRotation,0f,0f);
+		transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 		PlayerBody.Rotate(Vector3.up * mouseX);
-		
 
 	}
-	
 
 }
-
