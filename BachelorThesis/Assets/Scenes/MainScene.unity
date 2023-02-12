@@ -405,15 +405,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Option A
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
+  m_sharedMaterial: {fileID: 5568139486216784236, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1086,11 +1086,10 @@ MonoBehaviour:
   UiCamera: {fileID: 1335702153}
   FPSController: {fileID: 1862900724}
   _SceneParent: {fileID: 378897192}
-  CurrentSceneName: 0
+  CurrentSceneName: 1
   CurrentSceneInstance: {fileID: 0}
   Scenes:
-  - {fileID: 7850693226394515653, guid: 3e27b279ec43ad4428eb28336932ac2e, type: 3}
-  - {fileID: 7850693226394515653, guid: b202c1fe9e63b6444819360202a9efa4, type: 3}
+  - {fileID: 7850693226394515653, guid: 7ca9bf33511081549aad77ca4c92736c, type: 3}
 --- !u!4 &976060149
 Transform:
   m_ObjectHideFlags: 0
