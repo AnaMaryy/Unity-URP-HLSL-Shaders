@@ -29,12 +29,12 @@ Shader "Thesis/ToonShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdbase //unity compiles all variants necessary for forward base renderig
+           // #pragma multi_compile_fwdbase //unity compiles all variants necessary for forward base renderig
 
 
             #include "UnityCG.cginc"
             #include "Lighting.cginc"
-            #include "AutoLight.cginc"
+            //#include "AutoLight.cginc"
 
 
             struct appdata
@@ -50,7 +50,7 @@ Shader "Thesis/ToonShader"
                 float3 worldNormal : NORMAL;
                 float4 vertex : SV_POSITION;
                 float3 viewDir : TEXCOORD1;
-                SHADOW_COORDS(2) //recieve shadows
+               // SHADOW_COORDS(2) //recieve shadows
 
             };
 
@@ -71,7 +71,7 @@ Shader "Thesis/ToonShader"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                TRANSFER_SHADOW(o) // recieve shadows
+                //TRANSFER_SHADOW(o) // recieve shadows
 
                 return o;
             }
@@ -82,7 +82,7 @@ Shader "Thesis/ToonShader"
                 float3 normal = normalize(i.worldNormal);
                 float NdotL = dot(normal, _WorldSpaceLightPos0);
 
-                float shadow = SHADOW_ATTENUATION(i); //sample shadow
+                //float shadow = SHADOW_ATTENUATION(i); //sample shadow
 
                 //divide the light into light and dark : todo : add more discrete bands of shading :D
                 //float lightValue = NdotL < 0 ? 0 :1;
@@ -100,7 +100,7 @@ Shader "Thesis/ToonShader"
                     lightValue = 1;
                 }
                 //add shadow
-                lightValue *= shadow;
+                //lightValue *= shadow;
                 //lightValue = smoothstep(0,0.1, NdotL);
                 //final light -> takes the color of the direction light 
                 float4 light = lightValue * _LightColor0;
@@ -131,7 +131,7 @@ Shader "Thesis/ToonShader"
             }
             ENDCG
         }
-        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER" //add shadow pass that is defined by another shader, the unity defualt for shadows
+        //UsePass "Legacy Shaders/VertexLit/SHADOWCASTER" //add shadow pass that is defined by another shader, the unity defualt for shadows
 
     }
 }

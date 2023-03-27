@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,7 +18,6 @@ public class SceneManager : MonoSingleton<SceneManager> {
 	[HideInInspector] public SceneController CurrentSceneInstance;
 
 	public List<SceneController> Scenes;
-	private Dictionary<SceneController.SceneName, SceneController> _dictScenes;
 
 	protected override void Awake() {
 		base.Awake();
@@ -28,10 +28,6 @@ public class SceneManager : MonoSingleton<SceneManager> {
 
 	private void Init() {
 		_currentSceneName = CurrentSceneName;
-		_dictScenes = new Dictionary<SceneController.SceneName, SceneController>();
-		foreach (SceneController scene in Scenes) {
-			_dictScenes[scene.Name] = scene;
-		}
 	}
 
 	private SceneController GetScene(SceneController.SceneName sceneName) {
@@ -55,13 +51,6 @@ public class SceneManager : MonoSingleton<SceneManager> {
 		//teleport player to first camera pos
 		var cameraAnchor = CurrentSceneInstance.CameraAnchors[0];
 		FPSController.Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
-	}
-
-	void OnValidate() {
-		if (_currentSceneName != CurrentSceneName) {
-			_currentSceneName = CurrentSceneName;
-			LoadScene(_currentSceneName);
-		}
 	}
 
 }
