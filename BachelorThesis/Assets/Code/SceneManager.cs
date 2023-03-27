@@ -11,14 +11,13 @@ public class SceneManager : MonoSingleton<SceneManager> {
 	public Camera UiCamera;
 	public FPSController FPSController;
 	[SerializeField] private Transform _SceneParent;
-	
+
 	public SceneController.SceneName CurrentSceneName; // can change scene in Editor
 	private SceneController.SceneName _currentSceneName;
 	[HideInInspector] public SceneController CurrentSceneInstance;
 
 	public List<SceneController> Scenes;
 	private Dictionary<SceneController.SceneName, SceneController> _dictScenes;
-	
 
 	protected override void Awake() {
 		base.Awake();
@@ -35,21 +34,27 @@ public class SceneManager : MonoSingleton<SceneManager> {
 		}
 	}
 
+	private SceneController GetScene(SceneController.SceneName sceneName) {
+		foreach (SceneController scene in Scenes) {
+			if (scene.Name == sceneName) return scene;
+		}
+		throw new Exception("No Scene with the name of: " + sceneName);
+	}
+
 	public void LoadScene(SceneController.SceneName sceneName) {
 		//load scene
-		if (_dictScenes.ContainsKey(sceneName)) {
-			if (CurrentSceneInstance != null) {
-				DestroyImmediate(CurrentSceneInstance.gameObject);
-			}
-			CurrentSceneInstance = Instantiate(_dictScenes[sceneName], _SceneParent);
-			CurrentSceneInstance.Init(FPSController);
-			_currentSceneName = sceneName;
-		} else {
-			throw new Exception("There is no scene with the name " + sceneName);
+		var scene = GetScene(sceneName);
+
+		if (CurrentSceneInstance != null) {
+			DestroyImmediate(CurrentSceneInstance.gameObject);
 		}
+		CurrentSceneInstance = Instantiate(scene, _SceneParent);
+		CurrentSceneInstance.Init(FPSController);
+		_currentSceneName = sceneName;
+
 		//teleport player to first camera pos
 		var cameraAnchor = CurrentSceneInstance.CameraAnchors[0];
-		FPSController.Teleport(cameraAnchor.transform.position,cameraAnchor.CameraData );
+		FPSController.Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
 	}
 
 	void OnValidate() {

@@ -1090,6 +1090,8 @@ MonoBehaviour:
   CurrentSceneInstance: {fileID: 0}
   Scenes:
   - {fileID: 7850693226394515653, guid: 7ca9bf33511081549aad77ca4c92736c, type: 3}
+  - {fileID: 7850693226394515653, guid: 3ca996c92485968428e49ac2b0bb84d9, type: 3}
+  - {fileID: 7850693226394515653, guid: 3e27b279ec43ad4428eb28336932ac2e, type: 3}
 --- !u!4 &976060149
 Transform:
   m_ObjectHideFlags: 0

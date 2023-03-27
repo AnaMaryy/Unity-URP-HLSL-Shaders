@@ -12,6 +12,7 @@ public class SceneController : MonoBehaviour {
 	public enum SceneName {
 
 		SAMPLE_SCENE,
+		TOON_SCENE,
 		SNOW_SCENE
 
 	}
