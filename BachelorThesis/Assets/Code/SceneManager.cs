@@ -1,19 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-//loads a scene : todo: change if there will be more scenes added
 public class SceneManager : MonoSingleton<SceneManager> {
 
-	public Camera WorldCamera;
-	public Camera UiCamera;
-	public FPSController FPSController;
+	// public Camera WorldCamera;
+	// public Camera UiCamera;
 	[SerializeField] private Transform _SceneParent;
+	//todo switch to urp
+	///player links
+	public PlayerCamera PlayerCamera;
+	public PlayerMovement PlayerMovement;
 
-	public SceneController.SceneName CurrentSceneName; // can change scene in Editor
+	public SceneController.SceneName CurrentSceneName; 
 	private SceneController.SceneName _currentSceneName;
 	[HideInInspector] public SceneController CurrentSceneInstance;
 
@@ -45,12 +43,15 @@ public class SceneManager : MonoSingleton<SceneManager> {
 			DestroyImmediate(CurrentSceneInstance.gameObject);
 		}
 		CurrentSceneInstance = Instantiate(scene, _SceneParent);
-		CurrentSceneInstance.Init(FPSController);
 		_currentSceneName = sceneName;
+		RenderSettings.skybox = scene.SkyMaterial;
+		
+		//set the player camera rotation
+		PlayerCamera.SetCameraRotation(14,-75);
+
 
 		//teleport player to first camera pos
-		var cameraAnchor = CurrentSceneInstance.CameraAnchors[0];
-		FPSController.Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
+		//FPSController.Teleport(cameraAnchor.transform.position, cameraAnchor.CameraData);
 	}
 
 }

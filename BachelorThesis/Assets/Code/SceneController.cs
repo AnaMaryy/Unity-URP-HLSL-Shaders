@@ -9,6 +9,7 @@ using UnityEngine.Profiling;
 
 public class SceneController : MonoBehaviour {
 
+	
 	public enum SceneName {
 
 		SampleScene,
@@ -16,14 +17,11 @@ public class SceneController : MonoBehaviour {
 		SnowScene
 
 	}
-
+	[Title("Links")]
+	public Transform CameraAnchor;
+	[Title("Parameters")]
 	public SceneName Name;
+	public Material SkyMaterial;
 
-	public List<CameraAnchorController> CameraAnchors;
-	private int _currentAchor = 0;
-
-	public void Init(FPSController fps) {
-//		fps.Teleport(CameraAnchors[_currentAchor]);
-	}
 
 }
