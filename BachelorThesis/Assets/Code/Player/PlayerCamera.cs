@@ -12,13 +12,7 @@ public class PlayerCamera : MonoBehaviour {
 	private float yRotation;
 
 	private bool isFirstChange = false;
-
-	private void Start() {
-		// Cursor.lockState = CursorLockMode.Locked;
-		// Cursor.visible = false;
-
-	}
-
+	
 	public void SetCameraRotation(float x, float y) {
 		xRotation = x;
 		yRotation = y;
