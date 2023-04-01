@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -27,11 +28,23 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void ProcessInput() {
+		//Key Inputs
+		
 		//teleport to the camera anchor of the scene
-		if (Input.GetKey(KeyCode.T)) {
-			Teleport(SceneManager.Instance.CurrentSceneInstance.CameraAnchor);
+		// if (Input.GetKey(KeyCode.T)) {
+		// 	Teleport(SceneManager.Instance.CurrentSceneInstance.CameraAnchor);
+		// }
+
+		if (Input.GetKey(KeyCode.Escape)) {
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
+		if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.visible = false;
 		}
 		
+		//movement inputs
 		HorizontalInput = Input.GetAxisRaw("Horizontal");
 		VerticalInput = Input.GetAxisRaw("Vertical");
 		JumpInput =Input.GetAxisRaw("Jump");

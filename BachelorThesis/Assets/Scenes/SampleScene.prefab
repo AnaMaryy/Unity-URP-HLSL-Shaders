@@ -129,8 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a26a434ba1709b499919784c377d59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  CameraAnchor: {fileID: 0}
+  CameraAnchor: {fileID: 5944429551295415797}
   Name: 0
   SkyMaterial: {fileID: 0}
 --- !u!1 &7850693228000283353

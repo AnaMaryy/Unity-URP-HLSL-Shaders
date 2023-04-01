@@ -13,14 +13,10 @@ public class PlayerCamera : MonoBehaviour {
 
 	private bool isFirstChange = false;
 
-
-
 	private void Start() {
 		// Cursor.lockState = CursorLockMode.Locked;
 		// Cursor.visible = false;
-		//Cursor.lockState = CursorLockMode.Confined;
-		// //start rotations
-		//SetCameraRotation(14,-75);
+
 	}
 
 	public void SetCameraRotation(float x, float y) {
@@ -43,17 +39,12 @@ public class PlayerCamera : MonoBehaviour {
 				isFirstChange = true;
 				xRotation = transform.localRotation.eulerAngles.x;
 				yRotation = transform.localRotation.eulerAngles.y;
-			} 
+			}
 		}
-	
-
-		
 
 		//rotate camera
 		transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
 		orientation.localRotation = Quaternion.Euler(0, yRotation, 0);
-		Debug.Log(xRotation +" "+ yRotation);
-		
 	}
 
 }
