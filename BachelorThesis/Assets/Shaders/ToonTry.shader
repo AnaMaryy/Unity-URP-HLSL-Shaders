@@ -9,11 +9,15 @@ Shader "Thesis/ToonTry"
         _BaseTexture("Base Texture", 2D) = "white" {}
         _BaseColor("Color", Color) = (0.5,0,0.5,1)
 
-        [Header(Lighting)]
+        [Header(Diffuse Lighting)]
         _RampNumber("Number of lighting ramps", int) = 2
-        [HDR]_AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
+        _AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
+
+        [Header(Specular Lighting)]
+        [Toggle(ENABLE_SPECULAR)] _SpecEnabled ("Enabled", Float) = 0
         [HDR]_SpecularColor("Specular Color", Color) = (0.9,0.9,0.9,1) //color of reflection
-        _Glossiness("Glossiness", Float) = 32 //control the size of reflection
+        _Shininess("_Shininess", Float) = 32 //control the size of reflection
+        //todo specular texture
     }
 
     SubShader
@@ -30,6 +34,7 @@ Shader "Thesis/ToonTry"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma shader_feature ENABLE_SPECULAR
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include  "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
@@ -62,8 +67,10 @@ Shader "Thesis/ToonTry"
             half4 _BaseColor;
             int _RampNumber;
             float4 _AmbientColor;
-            float _Glossiness;
+            //specular
             float4 _SpecularColor;
+            float _Shininess;
+
 
             CBUFFER_END
 
@@ -81,36 +88,29 @@ Shader "Thesis/ToonTry"
 
             half4 frag(Varyings IN) : SV_Target
             {
+                // ----------- DIFFUSE LIGHT -------------------------------
                 //blinn phong lighting calculation
-                float NdotL = dot(_MainLightPosition, IN.worldNormal);
-                //seprate light value into ramps;
-                float rampValue = 1.0 / (_RampNumber - 1);
-                float lightIntensity = (ceil(NdotL / rampValue) * rampValue);
-                // float lightIntensity = NdotL > 0 ? 1 : 0;
+                 float NdotL = dot(_MainLightPosition, IN.worldNormal);
+                 //seprate light value into ramps;
+                 float rampValue = 1.0 / (_RampNumber - 1);
+                 float lightIntensity = (ceil(NdotL / rampValue) * rampValue);
+                
+                
+                // // ----- SPECULAR LIGHT -----------------------------------
+                half3 halfVector = normalize(reflect(-_MainLightPosition, IN.worldNormal));
+               
+                half RdotV =  dot(halfVector,IN.viewDir);
+                // Make large values really large and small values really small.
+                half specPow = pow(RdotV , _Shininess * _Shininess);
+                specPow = smoothstep(0.005, 0.01, specPow);
+                float4 specular = _SpecularColor *  specPow;
+                
 
-                float light = lightIntensity * _MainLightColor; // get the color of the directional light
+                //-------------- FINAL COLOR -------------------------------
+                float4 light = lightIntensity * _MainLightColor + _AmbientColor + specular;
+                // get the color of the directional light
 
-                // ----- SPECULAR LIGHT -------------
-                // float3 halfVector = normalize( _MainLightPosition.xyz + IN.viewDir);
-                // float NdotH = dot(IN.worldNormal, halfVector);
-                // float specularIntensity = pow(NdotH * lightIntensity, _Glossiness * _Glossiness);
-                // float specularIntensitySmooth = smoothstep(0.00, 0.02, specularIntensity);
-                // float4 specular = specularIntensitySmooth * _SpecularColor;
-                half3 lightDir = normalize(_MainLightPosition.xyz);
-
-                half3 refl = normalize(reflect(lightDir, IN.worldNormal));
-                // Camera direction
-				half3 viewDir = normalize(_WorldSpaceCameraPos.xyz - IN.position.xyz);
-                	// Calculate dot product between the reflection diretion and the view direction [0...1]
-				half RdotV = max(0., dot(refl, viewDir));
-                	// Make large values really large and small values really small.
-				half specPow = pow(RdotV, _Glossiness);
-                half3 specular = _SpecularColor * pow(10,2) *specPow;
-
-
-
-                float finalLight = (_AmbientColor + light + specular );
-                half4 color = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor * finalLight;
+                float4 color = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor * light;
                 return color;
             }
             ENDHLSL
