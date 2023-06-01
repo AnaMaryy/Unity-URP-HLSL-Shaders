@@ -17,6 +17,12 @@ Shader "Thesis/ToonShaderTry2"
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
 
+        [Header(Specular light)]
+        [HDR]
+        _SpecularColor("Specular Color", Color) = (0.9,0.9,0.9,1)
+        _Glossiness("Glossiness", Float) = 32
+
+
 
     }
 
@@ -56,10 +62,10 @@ Shader "Thesis/ToonShaderTry2"
             {
                 //position of the vertex after being transformed into projection space || system value
                 float4 positionCS : SV_POSITION;
-                //   float3 positionWS : TEXCOORD0;
+                float3 positionWS : TEXCOORD0;
                 float2 uv : TEXCOORD1;
                 float3 normalWS: NORMAL;
-                //float3 viewDirWS : TEXCOORD2;
+                float3 viewDirWS : TEXCOORD2;
             };
 
             TEXTURE2D(_BaseTexture); // declare _BaseTexture as a Texture2D object
@@ -70,10 +76,15 @@ Shader "Thesis/ToonShaderTry2"
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseTexture_ST; //ST -> necessary for tilling to work
             half4 _BaseColor;
+            //shadow
             float _ShadowStep;
             float _ShadowStepSmooth;
 
+            //specular
+            float _Glossiness;
+            float4 _SpecularColor;
 
+            //ambient
             float4 _AmbientColor;
 
 
@@ -84,8 +95,9 @@ Shader "Thesis/ToonShaderTry2"
             {
                 Varyings OUT;
                 OUT.positionCS = TransformObjectToHClip(IN.position.xyz); //transforms position to clip space
-                // OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
+                OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
+                OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
                 //OUT.viewDirWS = GetCameraPositionWS() - OUT.positionWS;
 
                 // OUT.normalWS = float4( OUT.normalWS, OUT.viewDirWS.x);
@@ -99,19 +111,25 @@ Shader "Thesis/ToonShaderTry2"
                 //variables
                 float3 normal = normalize(IN.normalWS);
                 float lightPos = normalize(_MainLightPosition);
+                float3 viewDir = normalize(IN.viewDirWS);
+
+                float NdotL = dot(normal, lightPos);
+                float3 halfVector = normalize(lightPos + viewDir);
+                float NdotH = dot(normal, halfVector);
+
 
                 //blinn phong lighting toonified
-                float NdotL = dot(normal, lightPos); 
-                float toonlight = smoothstep(_ShadowStep- _ShadowStepSmooth, _ShadowStep+ _ShadowStepSmooth, NdotL);
-
-
-           
+                float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
                 float4 light = toonlight * _MainLightColor;
+                //specular
+                float specularIntensity = pow(NdotH * light, _Glossiness * _Glossiness);
+                float specularIntensitySmooth = smoothstep(0.005, 0.01, specularIntensity);
+                float4 specular = specularIntensitySmooth * _SpecularColor;
 
 
                 float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor;
 
-                float4 final_color = base_texture * (_AmbientColor + light);
+                float4 final_color = base_texture * (_AmbientColor + light + specular);
                 final_color.a = 1;
 
                 return final_color;
