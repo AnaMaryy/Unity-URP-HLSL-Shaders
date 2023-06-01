@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1466048751264629666
+--- !u!114 &-8172979246547809032
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,10 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonTry
-  m_Shader: {fileID: 4800000, guid: 776045f8bc94d494d9b8a67ae71d9b44, type: 3}
-  m_ValidKeywords:
-  - ENABLE_SPECULAR
+  m_Name: ToonTry2
+  m_Shader: {fileID: 4800000, guid: 4ca71512bf23455f9c3cdc941ee672b3, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,10 +38,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: ce5f11cd993284c4f9c54f854bdc8c9c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Bump:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -112,40 +107,25 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
-    - _Glossiness: 283
+    - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _RampNumber: 2
     - _ReceiveShadows: 1
-    - _RimAmount: 1
-    - _RimIntensity: 0.844
-    - _RimPower: 1
-    - _RimStep: 0.65
-    - _RimStepSmooth: 0.4
-    - _RimThreshold: 0.1
-    - _Shininess: 32
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _Snow: 1
-    - _SnowDepth: 0
-    - _SpecEnabled: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _ToonBandsNumber: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _AmbientColor: {r: 0.022716662, g: 0.017058246, b: 0.23584908, a: 1}
-    - _BaseColor: {r: 0.9811321, g: 0.74664766, b: 0.74664766, a: 1}
+    - _AmbientColor: {r: 1, g: 0.42138356, b: 0.42138356, a: 1}
+    - _BaseColor: {r: 0.8113208, g: 0.5791503, b: 0.5791503, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.74331963, g: 1, b: 0.3066038, a: 1}
-    - _SnowColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SnowDirection: {r: 0, g: 1, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SpecularColor: {r: 1, g: 0.740566, b: 0.740566, a: 1}
   m_BuildTextureStacks: []
