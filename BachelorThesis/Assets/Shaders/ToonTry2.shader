@@ -28,7 +28,9 @@ Shader "Thesis/ToonShaderTry2"
         _RimAmount("Rim Amount", Range(0, 1)) = 0.716
         _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
-
+        [Header(Outline)]
+        _OutlineWidth ("OutlineWidth", Range(0.0, 1.0)) = 0.15
+        _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
 
     }
@@ -152,6 +154,45 @@ Shader "Thesis/ToonShaderTry2"
                 final_color.a = 1;
 
                 return final_color;
+            }
+            ENDHLSL
+        }
+        Pass
+        {
+            Name "Outline"
+            Cull Front
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
+            {
+                float4 position : POSITION;
+                float3 normal : NORMAL;
+            };
+
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+
+            CBUFFER_START(UnityPerMaterial)
+
+            float _OutlineWidth;
+            float4 _OutlineColor;
+            CBUFFER_END
+
+            Varyings vert(Attributes IN)
+            {
+                Varyings OUT;
+                OUT.positionCS = TransformObjectToHClip(float4(IN.position.xyz + IN.normal * _OutlineWidth * 0.09, 1));
+                return OUT;
+            }
+
+            float4 frag(Varyings i) : SV_Target
+            {
+                return _OutlineColor;
             }
             ENDHLSL
         }
