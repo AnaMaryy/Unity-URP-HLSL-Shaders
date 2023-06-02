@@ -175,6 +175,7 @@ Shader "Thesis/ToonShaderTry2"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float4 color : COLOR;
             };
 
             CBUFFER_START(UnityPerMaterial)
@@ -185,14 +186,23 @@ Shader "Thesis/ToonShaderTry2"
 
             Varyings vert(Attributes IN)
             {
+                //todo: ana understand this lmao 
                 Varyings OUT;
-                OUT.positionCS = TransformObjectToHClip(float4(IN.position.xyz + IN.normal * _OutlineWidth * 0.09, 1));
+
+                    OUT.positionCS =TransformObjectToHClip(IN.position); // always have to do-> set the postiiton in the clip space
+					//returns the normal in the worls coordinates
+				float3 norm   = normalize(mul ((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
+				// projection: from world -> view, which is our clipping space, so we get a flat outline
+				float2 offset =  TransformWViewToHClip(norm.xyz);
+
+				OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
+				OUT.color = _OutlineColor;
                 return OUT;
             }
 
-            float4 frag(Varyings i) : SV_Target
+            float4 frag(Varyings IN) : SV_Target
             {
-                return _OutlineColor;
+                return IN.color;
             }
             ENDHLSL
         }
