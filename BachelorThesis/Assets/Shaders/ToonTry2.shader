@@ -29,7 +29,7 @@ Shader "Thesis/ToonShaderTry2"
         _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
         [Header(Outline)]
-        _OutlineWidth ("OutlineWidth", Range(0.0, 1.0)) = 0.15
+        _OutlineWidth ("OutlineWidth", Range(0.0, 1)) = 0.15
         _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
 
@@ -189,14 +189,15 @@ Shader "Thesis/ToonShaderTry2"
                 //todo: ana understand this lmao 
                 Varyings OUT;
 
-                    OUT.positionCS =TransformObjectToHClip(IN.position); // always have to do-> set the postiiton in the clip space
-					//returns the normal in the worls coordinates
-				float3 norm   = normalize(mul ((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
-				// projection: from world -> view, which is our clipping space, so we get a flat outline
-				float2 offset =  TransformWViewToHClip(norm.xyz);
+                OUT.positionCS = TransformObjectToHClip(IN.position);
+                // always have to do-> set the postiiton in the clip space
+                //returns the normal in the worls coordinates
+                float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
+                // projection: from world -> view, which is our clipping space, so we get a flat outline
+                float2 offset = TransformWViewToHClip(norm.xyz);
 
-				OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
-				OUT.color = _OutlineColor;
+                OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
+                OUT.color = _OutlineColor;
                 return OUT;
             }
 
@@ -206,5 +207,7 @@ Shader "Thesis/ToonShaderTry2"
             }
             ENDHLSL
         }
+        UsePass "Universal Render Pipeline/Lit/ShadowCaster"
+
     }
 }
