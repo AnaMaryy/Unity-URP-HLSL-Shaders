@@ -44,6 +44,8 @@ Shader "Thesis/ToonBase"
             //"PassFlags" = "OnlyDirectional" //restrict lighting data only to the directional light
         }
 
+
+
         Pass
         {
             Name "ToonForward"
@@ -54,7 +56,11 @@ Shader "Thesis/ToonBase"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma shader_feature_local _RECEIVE_SHADOWS_ON
+
+            // Universal Render Pipeline keywords
+            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            // #pragma multi_compile _ _SHADOWS_SOFT
 
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -73,7 +79,6 @@ Shader "Thesis/ToonBase"
                 //position of the vertex after being transformed into projection space || system value
                 float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
-
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS: NORMAL;
                 float3 viewDirWS : TEXCOORD2;
@@ -114,9 +119,6 @@ Shader "Thesis/ToonBase"
                 OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
-                //OUT.viewDirWS = GetCameraPositionWS() - OUT.positionWS;
-
-                // OUT.normalWS = float4( OUT.normalWS, OUT.viewDirWS.x);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
 
                 return OUT;
@@ -128,6 +130,9 @@ Shader "Thesis/ToonBase"
                 float3 normal = normalize(IN.normalWS);
                 float lightPos = normalize(_MainLightPosition);
                 float3 viewDir = normalize(IN.viewDirWS);
+                float4 shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
+                Light mainLight = GetMainLight(shadowCoord);
+
 
                 //general calculations
                 float NdotL = dot(normal, lightPos);
@@ -137,8 +142,11 @@ Shader "Thesis/ToonBase"
 
 
                 //blinn phong lighting toonified
+                
                 float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
-                float4 light = toonlight * _MainLightColor;
+                //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
+
+                float4 light = toonlight * _MainLightColor ;//* recieveShadow;
                 //specular
                 float specularNH = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
                                               (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
@@ -153,7 +161,7 @@ Shader "Thesis/ToonBase"
                 //float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor;
                 float4 base_texture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
-                float4 final_color = base_texture * (_AmbientColor + light + specular + rim);
+                float4 final_color = base_texture * (_AmbientColor + light + specular + rim) ;
                 final_color.a = 1;
 
                 return final_color;

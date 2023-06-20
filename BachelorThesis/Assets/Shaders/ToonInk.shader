@@ -6,7 +6,7 @@ Shader "Thesis/ToonInk"
     Properties
     {
         [Header(Base Toon Settings)]
-        _BaseTexture("Base Texture", 2D) = "white" {}
+        _BaseMap("Base Map", 2D) = "white" {}
         _BaseColor("Color", Color) = (0.5,0,0.5,1)
 
         [Header(Shadow Settings)]
@@ -17,16 +17,7 @@ Shader "Thesis/ToonInk"
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
 
-        [Header(Specular light)]
-        [HDR]
-        _SpecularColor("Specular Color", Color) = (0.9,0.9,0.9,1)
-        _SpecularStep ("SpecularStep", Range(0, 1)) = 0.5
-        _SpecularStepSmooth ("SpecularStepSmooth", Range(0, 1)) = 0.01
 
-        [Header(Rim Light)]
-        _RimColor("Rim Color", Color) = (1,1,1,1)
-        _RimAmount("Rim Amount", Range(0, 1)) = 0.716
-        _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
         [Header(Outline)]
         _OutlineWidth ("OutlineWidth", Range(0.0, 1)) = 0.15
@@ -39,10 +30,13 @@ Shader "Thesis/ToonInk"
     {
         Tags
         {
-            "RenderType" = "Opaque"
+            "Queue" = "Transparent"
+            "RenderType" = "Transparent"
             "RenderPipeline" = "UniversalRenderPipeline"
             //"PassFlags" = "OnlyDirectional" //restrict lighting data only to the directional light
         }
+
+
 
         Pass
         {
@@ -54,7 +48,11 @@ Shader "Thesis/ToonInk"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma shader_feature_local _RECEIVE_SHADOWS_ON
+
+            // Universal Render Pipeline keywords
+            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            // #pragma multi_compile _ _SHADOWS_SOFT
 
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -72,36 +70,27 @@ Shader "Thesis/ToonInk"
             {
                 //position of the vertex after being transformed into projection space || system value
                 float4 positionCS : SV_POSITION;
-                float3 positionWS : TEXCOORD0;
-                float2 uv : TEXCOORD1;
+                float2 uv : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
                 float3 normalWS: NORMAL;
                 float3 viewDirWS : TEXCOORD2;
             };
 
-            TEXTURE2D(_BaseTexture); // declare _BaseTexture as a Texture2D object
-            SAMPLER(sampler_BaseTexture); // declare sampler for _BaseTexture
+            TEXTURE2D(_BaseMap); // declare _BaseTexture as a Texture2D object
+            SAMPLER(sampler_BaseMap); // declare sampler for _BaseTexture
 
 
             // make variabled SRP Batcher compatible -> SRP Batcher is a draw call optimization
-            float4 _BaseTexture_ST; //ST -> necessary for tilling to work
-
             CBUFFER_START(UnityPerMaterial)
+            float4 _BaseMap_ST; //ST -> necessary for tilling to work
             half4 _BaseColor;
             //shadow
             float _ShadowStep;
             float _ShadowStepSmooth;
 
-            //specular
-            float4 _SpecularColor;
-            float _SpecularStep;
-            float _SpecularStepSmooth;
 
             //ambient
             float4 _AmbientColor;
-            //rim
-            float4 _RimColor;
-            float _RimAmount;
-            float _RimThreshold;
 
 
             CBUFFER_END
@@ -114,10 +103,7 @@ Shader "Thesis/ToonInk"
                 OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
-                //OUT.viewDirWS = GetCameraPositionWS() - OUT.positionWS;
-
-                // OUT.normalWS = float4( OUT.normalWS, OUT.viewDirWS.x);
-                OUT.uv = IN.uv;
+                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
 
                 return OUT;
             }
@@ -128,6 +114,8 @@ Shader "Thesis/ToonInk"
                 float3 normal = normalize(IN.normalWS);
                 float lightPos = normalize(_MainLightPosition);
                 float3 viewDir = normalize(IN.viewDirWS);
+                float4 shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
+
 
                 //general calculations
                 float NdotL = dot(normal, lightPos);
@@ -137,23 +125,18 @@ Shader "Thesis/ToonInk"
 
 
                 //blinn phong lighting toonified
+
                 float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
-                float4 light = toonlight * _MainLightColor;
-                //specular
-                float specularNH = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
-                                              (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
-                float4 specular = specularNH * _SpecularColor;
-                //rim 
-                float4 rimDot = 1 - NdotV;
-                float rimIntensity = rimDot * pow(NdotL, _RimThreshold);
-                rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimIntensity); //toonifiy rim
-                float4 rim = rimIntensity * _RimColor;
+                //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
+                
 
 
-                float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor;
+                //float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor; 
+                _BaseColor.a = 0;
+                float4 base_texture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                base_texture.a = toonlight <= 0 ? 0:1;
 
-                float4 final_color = base_texture * (_AmbientColor + light + specular + rim);
-                final_color.a = 1;
+                float4 final_color = base_texture ;
 
                 return final_color;
             }
