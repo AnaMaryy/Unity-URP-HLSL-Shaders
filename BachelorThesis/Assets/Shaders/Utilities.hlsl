@@ -18,7 +18,11 @@ void Unity_Remap_float4(float4 In, float2 InMinMax, float2 OutMinMax, out float4
 {
     Out = OutMinMax.x + (In - InMinMax.x) * (OutMinMax.y - OutMinMax.x) / (InMinMax.y - InMinMax.x);
 }
-
+//returns position in clip space, input pos = object space position
+float4 ObjectToClipPos (float3 pos)
+{
+    return mul (UNITY_MATRIX_VP, mul (UNITY_MATRIX_M, float4 (pos,1)));
+}
 void Unity_Rotate_Radians_float(float2 UV, float2 Center, float Rotation, out float2 Out)
 {
     //rotation matrix

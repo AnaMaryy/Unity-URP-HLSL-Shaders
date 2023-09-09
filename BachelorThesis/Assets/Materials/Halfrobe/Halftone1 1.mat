@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Halftone1
+  m_Name: Halftone1 1
   m_Shader: {fileID: -6465566751694194690, guid: 20be2e606198fd141b2c6f603a3a72df, type: 3}
   m_ValidKeywords:
   - _USE_SCREEN_SPACE
@@ -78,6 +78,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Pattern_Texture:
+        m_Texture: {fileID: 2800000, guid: 76151585f0b620d4d9944f57d5274dec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -123,11 +127,12 @@ Material:
     - _Shading_Multiplier: -0.88
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _Softness: 0.108
+    - _Softness: 0.297
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _USE_SCREEN_SPACE: 1
+    - _USE_VORONOI_PATTERN: 0
     - _Voronoi_Angle_Offset: 2
     - _Voronoi_Cell_Density: 10
     - _WorkflowMode: 1

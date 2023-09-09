@@ -16,7 +16,6 @@ Shader "Thesis/HalftroneEffect"
         _VoronoiCellDensity("Voronoi Cell Density", Float) = 5
         [Toggle(_USE_VORONOI_PATTERN)]_USE_VORONOI_PATTERN("Use Voronoi Pattern", Float) = 0
         [NoScaleOffset]_PatternTexture("Pattern Texture", 2D) = "white" {}
-
     }
 
     SubShader
@@ -35,6 +34,7 @@ Shader "Thesis/HalftroneEffect"
             #pragma vertex vert
             #pragma fragment frag
             #pragma shader_feature_local _USE_SCREEN_SPACE
+            #pragma shader_feature_local _USE_VORONOI_PATTERN
 
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -78,6 +78,7 @@ Shader "Thesis/HalftroneEffect"
                 float3 positionWS : TEXCOORD1;
                 float2 uv : TEXCOORD2;
                 float3 normalWS: NORMAL;
+                float4 screenPos : TEXCOORD3;
             };
 
 
@@ -89,10 +90,14 @@ Shader "Thesis/HalftroneEffect"
                 OUT.positionWS = TransformObjectToWorld(IN.positionOS);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
 
+                float4 positionCS = ObjectToClipPos(IN.positionOS);
+                OUT.screenPos = ComputeScreenPos(positionCS);
+                OUT.screenPos = OUT.screenPos / OUT.screenPos.w;
+                // OUT.screenPos.xy = floor(OUT.screenPos.xy * _ScreenParams.xy);
+                // OUT.screenPos.xy = floor(OUT.screenPos.xy * 0.1) * 0.5;
+
                 return OUT;
             }
-
-          
 
 
             half4 frag(Varyings IN) : SV_Target
@@ -107,7 +112,7 @@ Shader "Thesis/HalftroneEffect"
 
                 //sample texture //todo : test works
                 float4 mainTexture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
-                
+
 
                 //unlit color -> convert between color spaces and soften shadow //todo : test works
                 float3 hsv;
@@ -119,8 +124,8 @@ Shader "Thesis/HalftroneEffect"
 
                 //diffuse light + color of circles
                 float diffuseLight = NDotL * shadowAttenuation;
-                float4 diffuseLightAndCircleColor =   diffuseLight + _CircleColor;
-                diffuseLightAndCircleColor  *= -1; // negate
+                float4 diffuseLightAndCircleColor = diffuseLight + _CircleColor;
+                diffuseLightAndCircleColor *= -1; // negate
 
                 //remap values -> set shadow treshold 
                 float2 outMinMax = float2(_LitTreshold - _FalloffThreshold, _LitTreshold);
@@ -134,15 +139,10 @@ Shader "Thesis/HalftroneEffect"
 
 
                 //adjust textures to screen ratio
-                float4 screenPosition = IN.positionHCS;
+                // float4 screenPosition = _ScreenParams /IN.positionHCS.w;
                 float screenRatio = _ScreenParams.x / _ScreenParams.y;
-                float newY = screenPosition.y / screenRatio;
-                float2 adjustedScreenRatio = float2(screenPosition.x, newY);
-                //
-                // float4 test;
-                // test.r = adjustedScreenRatio.r;
-                // test.g = adjustedScreenRatio.g;
-                // return test;
+                float newY = IN.screenPos.y / screenRatio;
+                float2 adjustedScreenRatio = float2(IN.screenPos.x, newY);
 
                 //generate halfthrone grid
                 float2 input;
@@ -157,9 +157,15 @@ Shader "Thesis/HalftroneEffect"
                 //voronoi
                 float pattern;
                 float cells;
-                Unity_Voronoi_float(circleDensity, _VoronoiAngleOffset, _VoronoiCellDensity, pattern, cells);
 
-                //todo : add use voronoi pattern :)
+                #ifdef _USE_VORONOI_PATTERN
+                Unity_Voronoi_float(circleDensity, _VoronoiAngleOffset, _VoronoiCellDensity, pattern, cells);
+                #else
+                //noise texture
+                pattern = SAMPLE_TEXTURE2D(_PatternTexture, sampler_PatternTexture, circleDensity);
+                #endif
+
+
                 // final steps
                 float4 patternsSmooth;
                 Unity_Smoothstep_float4(remap, remapShadow, pattern, patternsSmooth); //todo: here is the problem
