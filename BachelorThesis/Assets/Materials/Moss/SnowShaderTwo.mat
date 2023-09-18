@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3117134134547368425
+--- !u!114 &-4161377795471843082
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Moss1
-  m_Shader: {fileID: -6465566751694194690, guid: 8f69c9ded3b0e7a47a8dd00ecac087d2, type: 3}
+  m_Name: SnowShaderTwo
+  m_Shader: {fileID: -6465566751694194690, guid: 80b2f49802b10ab4e99e156a8248bafc, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -34,6 +34,18 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Normal_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Smoothness_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Texture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -65,14 +77,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MossDiffuse:
-        m_Texture: {fileID: 2800000, guid: 6261b33eb6065bc4cb302d44f424c184, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MossNormals:
-        m_Texture: {fileID: 2800000, guid: c108bd22c61638044b64497a41803d2b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -81,16 +85,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _RockNormals:
-        m_Texture: {fileID: 2800000, guid: 07e22c468366dea44b68fcddb13a3773, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _StoneDiffuse:
-        m_Texture: {fileID: 2800000, guid: 038bfbf2170b6214cb862a92b5649ac3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -108,7 +104,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _Base_Normal_Strength: 0.277
     - _Blend: 0
+    - _BuildUp_Noise_Size: 51.83
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -121,31 +119,31 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HeightOfMoss: 1
     - _Metallic: 0
-    - _MossContrast: 15.4
-    - _MossDirection: 0.689
-    - _MossLevel: 7.5
-    - _MossNormalStrength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RockNormalStrength: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _Snow_Amount: 0.69
+    - _Snow_Blend_Distance: 0.41
+    - _Snow_Color_Noise_Size: 63.8
+    - _Snow_Color_Noise_Strength: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _mossDepth: 2.61
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Color: {r: 0.8018868, g: 0.322772, b: 0.71052986, a: 0}
+    - _Base_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Base_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MossOffset: {r: 0, g: 1, b: 0, a: 0}
+    - _Snow_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Snow_Direction: {r: 0, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _UpVector: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
