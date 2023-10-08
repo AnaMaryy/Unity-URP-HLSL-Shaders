@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SnowShaderTwo 1
-  m_Shader: {fileID: -6465566751694194690, guid: 80b2f49802b10ab4e99e156a8248bafc, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8efdd67684c34b36ac1bbd296a3d1507, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -34,7 +34,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 30ba64d9d0301f54e923f16315503804, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Normal_Texture:
@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 2800000, guid: 30ba64d9d0301f54e923f16315503804, type: 3}
+        m_Texture: {fileID: 2800000, guid: 273e130395b156e47ad834190e5ab6bb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -85,6 +85,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Snow_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -104,6 +108,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _AmbientIntensity: 0
     - _Base_Normal_Strength: 0.863
     - _Blend: 0
     - _BuildUp_Noise_Size: 50
@@ -125,12 +130,15 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RimThreshold: 1.03
+    - _Shininess: 0.5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _Snow_Amount: 0.563
+    - _Snow_Amount: 0.696
     - _Snow_Blend_Distance: 0
-    - _Snow_Color_Noise_Size: 19.45
-    - _Snow_Color_Noise_Strength: 0
+    - _Snow_BuildUp_Noise_Size: 86.73
+    - _Snow_Color_Noise_Size: -364.7
+    - _Snow_Color_Noise_Strength: 0.446
     - _Snow_Height: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -139,13 +147,17 @@ Material:
     - _ZWrite: 1
     - _snow_Height_Power: 5.8
     m_Colors:
+    - _AmbientColor: {r: 1, g: 1, b: 1, a: 0.16470589}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Base_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Base_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Base_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Snow_Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Snow_Direction: {r: 0, g: 1, b: 0.5, a: 0}
+    - _Snow_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Snow_Direction: {r: 0, g: 1, b: 0, a: 0}
+    - _Snow_Primary_Color: {r: 0.4578181, g: 1, b: 0.11949676, a: 0}
+    - _Snow_Secondary_Color: {r: 0.16666651, g: 0, b: 1, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0.5176471}
   m_BuildTextureStacks: []

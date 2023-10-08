@@ -1,4 +1,4 @@
-ef// This shader draws a texture on the mesh.
+// This shader draws a texture on the mesh.
 Shader "Thesis/ToonInk"
 {
     // The _BaseMap variable is visible in the Material's Inspector, as a field

@@ -130,6 +130,7 @@ Shader "Thesis/ToonBase"
                 float3 normal = normalize(IN.normalWS);
                 float4 lightPos = normalize(_MainLightPosition);
                 float3 viewDir = normalize(IN.viewDirWS);
+
                 // float4 shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
                 // Light mainLight = GetMainLight(shadowCoord);
 
