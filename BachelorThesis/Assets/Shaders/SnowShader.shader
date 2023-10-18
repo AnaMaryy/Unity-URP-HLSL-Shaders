@@ -14,6 +14,7 @@ Shader "Thesis/SnowShader"
         _Snow_Direction("Snow Direction", Vector) = (0, 1, 0, 0)
         _Snow_Amount("Snow Amount", Range(0, 1)) = 0.7
         _Snow_Blend_Distance("Snow Blend Distance", Range(0, 1)) = 0.41
+        
         _Snow_BuildUp_Noise_Size("BuildUp Noise Size", Float) = 100
         _Snow_Height("Snow Height", Range(0, 0.5)) = 0
 
