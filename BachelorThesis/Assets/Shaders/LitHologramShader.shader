@@ -18,9 +18,7 @@ Shader "Thesis/LitHologramShader"
         _ScrollSpeed("Scroll Speed", Range(0,10)) = 0.06
 
         _GlitchStrength("Glith Strength", Range(0,10)) = 0.5
-
-
-
+        
     }
     SubShader
     {
@@ -88,6 +86,16 @@ Shader "Thesis/LitHologramShader"
 
             v2f vert(appdata v)
             {
+                //glitching y pos
+                float noise = 0;
+                Unity_SimpleNoise_float(v.positionOS.y, 500, noise);
+                float3 positionVS = TransformWorldToView(TransformObjectToWorld(v.positionOS));
+                noise *= _GlitchStrength;
+                float3 newPosVS = positionVS + float3(noise, 0, 0);
+                float3 newPosOS = TransformViewToObject(newPosVS);
+                v.positionOS = float4(newPosOS, 0);
+
+
                 v2f o;
                 o.positionHCS = TransformObjectToHClip(v.positionOS);
                 o.positionWS = TransformObjectToWorld(v.positionOS);
@@ -97,15 +105,6 @@ Shader "Thesis/LitHologramShader"
                 o.tangent.xyz = TransformObjectToWorldDir(v.tangent.xyz);
                 o.tangent.w = v.tangent.w;
                 o.bitangent = cross(o.normalWS, o.tangent.xyz) * o.tangent.w;
-
-                //glitching
-                float noise=0;
-                Unity_SimpleNoise_float(v.positionOS.y,500,noise);
-                float3 positionVS = TransformWorldToView(o.positionWS);
-                noise *= _GlitchStrength;
-                float3 newPosVS = positionVS + float3(noise,0,0);
-                float3 newPosOS = TransformWorldToObject(TransformViewToWorld(newPosVS));
-                
 
 
                 OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);

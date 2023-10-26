@@ -103,10 +103,10 @@ float4x4 GetViewToWorldMatrix()
     return viewToWorldMatrix;
 }
 
-float3 TransformViewToWorld(float3 positionVS)
+float3 TransformViewToObject(float3 positionVS)
 {
-    float4x4 viewToWorldMatrix = GetViewToWorldMatrix();
-    return mul(viewToWorldMatrix, float4(positionVS, 1.0)).xyz;
+   return TransformWorldToObject(mul(UNITY_MATRIX_I_V, float4(positionVS, 1) ).xyz); //transfrom 
+
 }
 
 // simple noise ///////////////////////
