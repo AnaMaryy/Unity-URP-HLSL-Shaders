@@ -24,32 +24,42 @@ Shader "Thesis/BaseUnlit"
             #pragma fragment frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
+            
+            //texture samplers
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
+            
             CBUFFER_START(UnityPerMaterial)
             half4 _Color;
+            float4 _BaseMap_ST;
+
             CBUFFER_END
 
             struct Attributes
             {
                 float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normalOS: NORMAL;
             };
 
             struct Varyings
             {
                 float4 positionHCS : SV_POSITION;
-                float2 uv : TEXCOORD2;
+                float2 uv : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
+                float3 normalWS: NORMAL;
+                float3 viewDirWS : TEXCOORD2;
             };
 
-            TEXTURE2D(_BaseMap);
-            float4 _BaseMap_ST;
-            SAMPLER(sampler_BaseMap);
 
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
-                OUT.positionHCS = TransformObjectToHClip(IN.positionOS);
                 return OUT;
             }
 

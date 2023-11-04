@@ -5,6 +5,8 @@ Shader "Thesis/PixelTest"
         _MainTex ("Texture", 2D) = "white"
     }
 
+    //todo : ana this is the final pixel shader, but still clean it up and rename it
+    
     SubShader
     {
         Tags

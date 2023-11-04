@@ -1,4 +1,4 @@
-Shader "Thesis/MyLitUrpShader"
+Shader "Thesis/BaseLit"
 {
     Properties
     {

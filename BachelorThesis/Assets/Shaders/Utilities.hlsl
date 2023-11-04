@@ -1,3 +1,4 @@
+#define M_PI 3.1415926535897932384626433832795
 static float _Constant_PHI = 1.618034;
 
 void Unity_ColorspaceConversion_RGB_HSV_float(float3 In, out float3 Out)

@@ -106,14 +106,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FresnelIntensity: 4.12
-    - _FresnelRamp: 2
+    - _FresnelIntensity: 1.78
+    - _FresnelRamp: 0
     - _GlitchStrength: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _NormalIntensity: 0.512
+    - _NormalIntensity: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
