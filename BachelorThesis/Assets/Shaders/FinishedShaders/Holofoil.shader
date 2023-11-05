@@ -1,4 +1,4 @@
-Shader "Test/kva"
+Shader "Thesis/Holofoil"
 {
     Properties
     {
