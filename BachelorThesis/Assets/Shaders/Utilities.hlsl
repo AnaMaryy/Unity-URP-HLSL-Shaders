@@ -106,8 +106,12 @@ float4x4 GetViewToWorldMatrix()
 
 float3 TransformViewToObject(float3 positionVS)
 {
-   return TransformWorldToObject(mul(UNITY_MATRIX_I_V, float4(positionVS, 1) ).xyz); //transfrom 
+    return TransformWorldToObject(mul(UNITY_MATRIX_I_V, float4(positionVS, 1)).xyz); //transfrom 
+}
 
+float2 Unity_TilingAndOffset_float(float2 UV, float2 Tiling, float2 Offset)
+{
+    return UV * Tiling + Offset;
 }
 
 // simple noise ///////////////////////
@@ -163,3 +167,21 @@ void Unity_SimpleNoise_float(float2 UV, float Scale, out float Out)
 }
 
 //////////////////////////////
+void Unity_NormalFromHeight_Tangent_float(float In, float Strength, float3 Position, float3x3 TangentMatrix,
+                                          out float3 Out)
+{
+    float3 worldDerivativeX = ddx(Position);
+    float3 worldDerivativeY = ddy(Position);
+
+    float3 crossX = cross(TangentMatrix[2].xyz, worldDerivativeX);
+    float3 crossY = cross(worldDerivativeY, TangentMatrix[2].xyz);
+    float d = dot(worldDerivativeX, crossY);
+    float sgn = d < 0.0 ? (-1.f) : 1.f;
+    float surface = sgn / max(0.00000000000001192093f, abs(d));
+
+    float dHdx = ddx(In);
+    float dHdy = ddy(In);
+    float3 surfGrad = surface * (dHdx * crossY + dHdy * crossX);
+    Out = normalize(TangentMatrix[2].xyz - (Strength * surfGrad));
+    Out = TransformWorldToTangent(Out, TangentMatrix);
+}
