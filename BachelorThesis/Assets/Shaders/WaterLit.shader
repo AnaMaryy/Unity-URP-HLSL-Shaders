@@ -132,16 +132,16 @@ Shader "Thesis/WaterLit"
                 //water color
                 float4 waterDepthColor = lerp(_WaterSurfaceColor, _WaterDepthColor, waterIntersection);
 
-                //water foam
-                float foamIntersection = DepthIntersection(i.screenPos, _FoamAmount, _WaterIntersectPower);
-                foamIntersection = foamIntersection * _FoamCutOff;
-                float2 foamUv = MovementUV(i.uv, _Time * _FoamTime, (1,1)* _FoamScale);
-                float foamNoise;
-                Unity_SimpleNoise_float(foamUv,1, foamNoise);
-                float foamStep =step(foamIntersection, foamNoise);
-                foamStep = foamStep * _FoamColor.a; //transparency of the foam
-
-                float3 finalColor = lerp(waterDepthColor,_FoamColor,foamStep);
+                // //water foam
+                // float foamIntersection = DepthIntersection(i.screenPos, _FoamAmount, _WaterIntersectPower);
+                // foamIntersection = foamIntersection * _FoamCutOff;
+                // float2 foamUv = MovementUV(i.uv, _Time * _FoamTime, (1,1)* _FoamScale);
+                // float foamNoise;
+                // Unity_SimpleNoise_float(foamUv,1, foamNoise);
+                // float foamStep =step(foamIntersection, foamNoise);
+                // foamStep = foamStep * _FoamColor.a; //transparency of the foam
+                //
+                // float3 finalColor = lerp(waterDepthColor,_FoamColor,foamStep);
                 
 
                 //refraction (normal maps)
@@ -168,7 +168,7 @@ Shader "Thesis/WaterLit"
                 inputData.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputData.normalWS);;
                 //baked global illumination; unity functions light mapping light probes
                 SurfaceData surfacedata;
-                surfacedata.albedo = finalColor;
+                surfacedata.albedo = waterDepthColor;
                 surfacedata.specular = 0;
                 surfacedata.metallic = 0;
                 surfacedata.smoothness = _Smoothness;
