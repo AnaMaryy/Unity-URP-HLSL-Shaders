@@ -3,7 +3,7 @@ Shader "Thesis/Crosshatching"
     Properties
     {
         [Header(Outline)]
-        _OutlineWidth ("OutlineWidth", Range(0.0, 1)) = 0.15
+        _OutlineWidth ("OutlineWidth", Range(0.0, 5)) = 0.15
         _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
         [Header(Lighting)]
@@ -163,7 +163,9 @@ Shader "Thesis/Crosshatching"
                     half4 texture6 = SAMPLE_TEXTURE2D(_CrossHatchingTexture6, sampler_CrossHatchingTexture6, IN.uv);
                     hatchValue = texture6;
                 }
-                return half4(rimColor.rgb + (hatchValue.rgb + _HatchColor.rgb), 1);
+               // return lerp( lerp( _HatchColor, float4(1,1,1,1), hatchValue.r ), hatchValue, .5 );
+
+                return half4(rimColor.rgb + (hatchValue.rgba + _HatchColor.rgba* brightness), 1);
             }
             ENDHLSL
         }
