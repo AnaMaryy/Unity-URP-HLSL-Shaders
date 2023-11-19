@@ -1,6 +1,6 @@
 Shader "Thesis/Outline"
 {
-    
+
     Properties
     {
         [Header(Outline)]
@@ -19,9 +19,16 @@ Shader "Thesis/Outline"
         {
             Name "Outline"
             Cull Front
+            ZWrite On
+            ZTest LEqual
+            ColorMask RGB
+            Blend SrcAlpha OneMinusSrcAlpha
+            Offset 10,10
+
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -32,12 +39,11 @@ Shader "Thesis/Outline"
 
             struct Varyings
             {
-                float4 positionCS : SV_POSITION;
+                float4 positionCS : POSITION;
                 float4 color : COLOR;
             };
 
             CBUFFER_START(UnityPerMaterial)
-
             float _OutlineWidth;
             float4 _OutlineColor;
             CBUFFER_END
@@ -45,17 +51,12 @@ Shader "Thesis/Outline"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-
                 OUT.positionCS = TransformObjectToHClip(IN.position);
-                float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
-                float2 offset = TransformWViewToHClip(norm.xyz);
-
-                OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
                 OUT.color = _OutlineColor;
                 return OUT;
             }
 
-            float4 frag(Varyings IN) : SV_Target
+            half4 frag(Varyings IN) : COLOR
             {
                 return IN.color;
             }
