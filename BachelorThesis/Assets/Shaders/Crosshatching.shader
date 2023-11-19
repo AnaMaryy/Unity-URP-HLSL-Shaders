@@ -5,12 +5,28 @@ Shader "Thesis/Crosshatching"
         [Header(Common)]
         [MainTexture] _BaseMap("Base Texture", 2D) = "white" {}
         [MainColor] _Color("Base Color", Color) = (1, 1, 1, 1)
+
+        [Header(Lighting)]
+        _DiffuseIntensity("Diffuse Intensity", Range(0,10))=1
+        _Ambient("Ambient", Range(0,1)) = 1
+        _AmbientIntensity("Ambient Intensity", Range(0,1))=1
+
+        _RimIntensity("Rim Intensity", Range(0,10))=1
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _Shininess("Shininess (Specular)", Range(0,0.1))=1
+        _SpecularColor("Specular Color", Color) = (1,1,1,1)
+
+
+        [Header(Hatching)]
+        _HatchColor("Hatch Color", Color) = (1,1,1,1)
         _CrossHatchingTexture1("CrossHatching Texture 1", 2D) = "white" {}
         _CrossHatchingTexture2("CrossHatching Texture 2", 2D) = "white" {}
         _CrossHatchingTexture3("CrossHatching Texture 3", 2D) = "white" {}
+        _CrossHatchingTexture4("CrossHatching Texture 4", 2D) = "white" {}
+        _CrossHatchingTexture5("CrossHatching Texture 5", 2D) = "white" {}
+        _CrossHatchingTexture6("CrossHatching Texture 6", 2D) = "white" {}
 
-        _CrossHatchingTexNum("CrossHatching Textures Number", int) = 6
-        _Repeat ("Repeat", Vector) = (1, 1, 1, 1)
+        _Tilling ("Tilling", Vector) = (1, 1, 1, 1)
 
 
     }
@@ -42,13 +58,21 @@ Shader "Thesis/Crosshatching"
             SAMPLER(sampler_CrossHatchingTexture2);
             TEXTURE2D(_CrossHatchingTexture3);
             SAMPLER(sampler_CrossHatchingTexture3);
+            TEXTURE2D(_CrossHatchingTexture4);
+            SAMPLER(sampler_CrossHatchingTexture4);
+            TEXTURE2D(_CrossHatchingTexture5);
+            SAMPLER(sampler_CrossHatchingTexture5);
+            TEXTURE2D(_CrossHatchingTexture6);
+            SAMPLER(sampler_CrossHatchingTexture6);
 
             CBUFFER_START(UnityPerMaterial)
-            half4 _Color;
+            half4 _Color, _HatchColor, _RimColor, _SpecularColor;
             float4 _BaseMap_ST;
             float4 _CrossHatchingTexture1_ST, _CrossHatchingTexture2_ST, _CrossHatchingTexture3_ST;
-            int _CrossHatchingTexNum;
-            float4 _Repeat;
+            float4 _CrossHatchingTexture4_ST, _CrossHatchingTexture5_ST, _CrossHatchingTexture6_ST;
+            float4 _Tilling;
+            float _DiffuseIntensity, _AmbientIntensity, _RimIntensity, _Shininess;
+            float _Ambient;
 
             CBUFFER_END
 
@@ -76,54 +100,88 @@ Shader "Thesis/Crosshatching"
                 OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
-                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap) *_Repeat;
+                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap) * _Tilling;
                 return OUT;
             }
 
+
             half4 frag(Varyings IN) : SV_Target
             {
-                half4 mainTex = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _Color;
+                //lighting calculation
+                half4 lightPosition = normalize(_MainLightPosition);
                 float3 normal = normalize(IN.normalWS);
+                float3 viewDir = normalize(IN.viewDirWS);
+                float3 halfVec = normalize(viewDir + normal);
+                float NumOfTextures = 6;
+
+
+                float diffuse = dot(normal, lightPosition);
+                float rim = 1 - saturate(dot(viewDir, normal));
+                rim = pow(rim, _RimIntensity);
+                float4 rimColor = _RimColor * rim;
+
+                float ambient = _Ambient * _AmbientIntensity;
+                float specular = saturate(dot(normal, halfVec));
+                specular = dot(specular, _Shininess);
+                float4 specularColor = _SpecularColor * specular;
+
+
+                float brightness = diffuse * _DiffuseIntensity + rim + ambient + specular;
+                brightness = 1 - brightness;
+
+
+                //hatching processing
+                half4 mainTex = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _Color;
+                //float3 normal = normalize(IN.normalWS);
                 float4 lightPos = normalize(_MainLightPosition);
                 float NDotL = saturate(dot(lightPos, normal));
 
                 float3 light = NDotL * _MainLightColor;
                 mainTex.rgb = mainTex.rgb * light;
-                float brightness = 1 - dot(mainTex.rgb, half3(0.3f, 0.59f, 0.11f));
+                //float brightness = 1 - dot(mainTex.rgb, half3(0.3f, 0.59f, 0.11f));
                 // Calculate the index of the texture based on shading
-                float step = 1.0 / _CrossHatchingTexNum;
+                float step = 1.0 / NumOfTextures;
 
-                float2 crosshatchUV = float2(brightness, IN.uv.y); // Corrected y-coordinate
-                // half4 tonalMapValue = SAMPLE_TEXTURE2D(_CrossHatchingTexture1, sampler_CrossHatchingTexture1,
-                //                                        crosshatchUV);
+
                 half4 hatchValue;
-                 if (brightness <= step) {
-                   hatchValue =  SAMPLE_TEXTURE2D(_CrossHatchingTexture3, sampler_CrossHatchingTexture3,IN.uv);
-                } else if (brightness > step && brightness <= 2.0 * step) {
-                   hatchValue =  SAMPLE_TEXTURE2D(_CrossHatchingTexture2, sampler_CrossHatchingTexture2,IN.uv);
-                } else  {
-                   hatchValue =  SAMPLE_TEXTURE2D(_CrossHatchingTexture1, sampler_CrossHatchingTexture1,IN.uv);
-                }
-                
-                return half4( hatchValue.rgb, 1);
+                float normalizedBrightness = brightness / step;
 
-                // half4 mainTex = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _Color;
-                // float3 normal = normalize(IN.normalWS);
-                // float4 lightPos = normalize(_MainLightPosition);
-                // float NDotL = saturate(dot(lightPos, normal));
-                //
-                // float3 light = NDotL * _MainLightColor;
-                // mainTex.rgb = mainTex.rgb * light;
-                //
-                //
-                // float brightness = 1 - (dot(mainTex.rgb, half3(0.3f, 0.59f, 0.11f)));
-                // // Calculate the index of the texture based on shading
-                // float step = 1.0 / _CrossHatchingTexNum;
-                //
-                // float2 crosshatchUV = float2(brightness, IN.uv.y); // Corrected y-coordinate
-                // half4 tonalMapValue = SAMPLE_TEXTURE2D(_CrossHatchingTexture, sampler_CrossHatchingTexture,
-                //                                        crosshatchUV);
-                // return half4(mainTex.rgb * tonalMapValue.rgb, 1);
+                if (brightness <= step)
+                {
+                    half4 texture1 = SAMPLE_TEXTURE2D(_CrossHatchingTexture1, sampler_CrossHatchingTexture1, IN.uv);
+                    half4 texture2 = SAMPLE_TEXTURE2D(_CrossHatchingTexture2, sampler_CrossHatchingTexture2, IN.uv);
+                    hatchValue = lerp(texture1, texture2, normalizedBrightness);
+                }
+                else if (brightness > step && brightness <= 2. * step)
+                {
+                    half4 texture2 = SAMPLE_TEXTURE2D(_CrossHatchingTexture2, sampler_CrossHatchingTexture2, IN.uv);
+                    half4 texture3 = SAMPLE_TEXTURE2D(_CrossHatchingTexture3, sampler_CrossHatchingTexture3, IN.uv);
+                    hatchValue = lerp(texture2, texture3, normalizedBrightness - 1);
+                }
+                else if (brightness > step * 2 && brightness <= 3. * step)
+                {
+                    half4 texture3 = SAMPLE_TEXTURE2D(_CrossHatchingTexture3, sampler_CrossHatchingTexture3, IN.uv);
+                    half4 texture4 = SAMPLE_TEXTURE2D(_CrossHatchingTexture4, sampler_CrossHatchingTexture4, IN.uv);
+                    hatchValue = lerp(texture3, texture4, normalizedBrightness - 2);
+                }
+                else if (brightness > step * 3 && brightness <= 4. * step)
+                {
+                    half4 texture4 = SAMPLE_TEXTURE2D(_CrossHatchingTexture4, sampler_CrossHatchingTexture4, IN.uv);
+                    half4 texture5 = SAMPLE_TEXTURE2D(_CrossHatchingTexture5, sampler_CrossHatchingTexture5, IN.uv);
+                    hatchValue = lerp(texture4, texture5, normalizedBrightness - 3);
+                }
+                else if (brightness > step * 4 && brightness <= 5. * step)
+                {
+                    half4 texture5 = SAMPLE_TEXTURE2D(_CrossHatchingTexture5, sampler_CrossHatchingTexture5, IN.uv);
+                    half4 texture6 = SAMPLE_TEXTURE2D(_CrossHatchingTexture6, sampler_CrossHatchingTexture6, IN.uv);
+                    hatchValue = lerp(texture5, texture6, normalizedBrightness - 4);
+                }
+                else if (brightness > 5 * step) //brightness > step * 5
+                {
+                    half4 texture6 = SAMPLE_TEXTURE2D(_CrossHatchingTexture6, sampler_CrossHatchingTexture6, IN.uv);
+                    hatchValue = texture6;
+                }
+                return half4(rimColor.rgb + (hatchValue.rgb + _HatchColor.rgb), 1);
             }
             ENDHLSL
         }
