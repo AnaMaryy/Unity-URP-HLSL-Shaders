@@ -115,14 +115,14 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.138
+    - _OutlineWidth: 2.09
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RimAmount: 0.626
     - _RimThreshold: 0.288
-    - _ShadowStep: 0.513
-    - _ShadowStepSmooth: 0.175
+    - _ShadowStep: 0.615
+    - _ShadowStepSmooth: 0.168
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

@@ -16,6 +16,10 @@ Shader "Thesis/WaterColor"
         _FresnelColor("Fresnel Color", Color) = (1,1,1,1)
         _FresnelIntensity("Fresnel Intensity", Range(0,10)) = 0
         _FresnelRamp("Fresnel Ramp", Range(0,10))= 0
+
+        [Header(Outline)]
+        _OutlineWidth ("OutlineWidth", Range(0.0, 10)) = 0.15
+        _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
     }
 
 
@@ -99,8 +103,8 @@ Shader "Thesis/WaterColor"
 
             float4 ShadowOffset(float3 worldPos)
             {
-                float shadowNoiseOne;
-                float shadowNoiseTwo;
+                float shadowNoiseOne=0;
+                float shadowNoiseTwo=0;
                 Unity_SimpleNoise_float(float2(worldPos.x, worldPos.z), 20, shadowNoiseOne);
                 Unity_SimpleNoise_float(float2(worldPos.x, worldPos.z), 80, shadowNoiseTwo);
                 shadowNoiseTwo *= 0.5f;
@@ -137,15 +141,16 @@ Shader "Thesis/WaterColor"
 
 
                 //noise texturing; watercolor noise
-                float4 triplanarNoise = SAMPLE_TEXTURE2D(_WaterColorNoiseTexture, sampler_WaterColorNoiseTexture, IN.uv);
+                float4 triplanarNoise =
+                    SAMPLE_TEXTURE2D(_WaterColorNoiseTexture, sampler_WaterColorNoiseTexture, IN.uv);
 
                 //combine watercolor texture noise and shadow; REGULAR NOISE
-                float shadowNoise = saturate(triplanarNoise.r+0.8f);
+                float shadowNoise = saturate(triplanarNoise.r + 0.8f);
                 shadowNoise *= brighterDiffuse;
-                float finalWaterColorShadow = shadow+ shadowNoise;
-                
+                float finalWaterColorShadow = shadow + shadowNoise;
+
                 //waterColor noise 
-                float waterColorNoise = abs(triplanarNoise.r * _WaterColorNoiseStrength- 0.3f);
+                float waterColorNoise = abs(triplanarNoise.r * _WaterColorNoiseStrength - 0.3f);
                 waterColorNoise = saturate(waterColorNoise + _WaterColorNoiseBrightness);
 
                 //x watercolour Noise
@@ -157,13 +162,66 @@ Shader "Thesis/WaterColor"
                 fresnelAmount = pow(fresnelAmount, _FresnelRamp) * _FresnelIntensity;
 
                 //FINAL COLOR
-                float4 finalColor = lerp(_ShadowColor,finalWaterColorShadow* _Color, finalWaterColorShadow*fresnelAmount );
+                float4 finalColor = lerp(_ShadowColor, finalWaterColorShadow * _Color,
+                                         finalWaterColorShadow * fresnelAmount);
                 return finalColor;
-                
             }
             ENDHLSL
         }
-        
+        Pass
+        {
+          //  Name "Outline Curved"
+            Cull Front
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Assets/Shaders/Utilities.hlsl"
+
+
+            struct Attributes
+            {
+                float4 position : POSITION;
+                float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
+            };
+
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+                float4 color : COLOR;
+            };
+
+            CBUFFER_START(UnityPerMaterial)
+
+            float _OutlineWidth;
+            float4 _OutlineColor;
+            CBUFFER_END
+
+            Varyings vert(Attributes IN)
+            {
+                //todo: ana understand this lmao 
+                Varyings OUT;
+
+                OUT.positionCS = TransformObjectToHClip(IN.position);
+                // always have to do-> set the postiiton in the clip space
+                //returns the normal in the worls coordinates
+                float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
+                // projection: from world -> view, which is our clipping space, so we get a flat outline
+                float2 offset = TransformWViewToHClip(norm.xyz);
+
+                OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
+                OUT.color = _OutlineColor;
+
+                return OUT;
+            }
+
+            float4 frag(Varyings IN) : SV_Target
+            {
+                return IN.color;
+            }
+            ENDHLSL
+        }
         UsePass "Universal Render Pipeline/Lit/ShadowCaster"
     }
 }

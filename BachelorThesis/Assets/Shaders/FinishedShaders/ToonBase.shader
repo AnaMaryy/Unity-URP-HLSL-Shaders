@@ -29,7 +29,7 @@ Shader "Thesis/ToonBase"
         _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
         [Header(Outline)]
-        _OutlineWidth ("OutlineWidth", Range(0.0, 1)) = 0.15
+        _OutlineWidth ("OutlineWidth", Range(0.0, 10)) = 0.15
         _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
 
@@ -143,11 +143,11 @@ Shader "Thesis/ToonBase"
 
 
                 //blinn phong lighting toonified
-                
+
                 float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
                 //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
 
-                float4 light = toonlight * _MainLightColor ;//* recieveShadow;
+                float4 light = toonlight * _MainLightColor; //* recieveShadow;
                 //specular
                 float specularNH = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
                                               (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
@@ -162,7 +162,7 @@ Shader "Thesis/ToonBase"
                 //float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor;
                 float4 base_texture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
-                float4 final_color = base_texture * (_AmbientColor + light + specular + rim) ;
+                float4 final_color = base_texture * (_AmbientColor + light + specular + rim);
                 final_color.a = 1;
 
                 return final_color;
@@ -177,10 +177,13 @@ Shader "Thesis/ToonBase"
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Assets/Shaders/Utilities.hlsl"
+
 
             struct Attributes
             {
                 float4 position : POSITION;
+                float2 uv : TEXCOORD0;
                 float3 normal : NORMAL;
             };
 
@@ -210,6 +213,7 @@ Shader "Thesis/ToonBase"
 
                 OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
                 OUT.color = _OutlineColor;
+
                 return OUT;
             }
 

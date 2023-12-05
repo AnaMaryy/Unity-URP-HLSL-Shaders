@@ -21,14 +21,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WaterColor 1
-  m_Shader: {fileID: 4800000, guid: b84114fbb2d54b2aa4436d36b10ff0b5, type: 3}
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -104,16 +105,17 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseBrightness: 1
+    - _DiffuseBrightness: 0.609
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FresnelIntensity: 1.01
-    - _FresnelRamp: 0
+    - _FresnelIntensity: 1.51
+    - _FresnelRamp: 0.17
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineWidth: 4.4
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -122,16 +124,17 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _WaterColorNoiseBrightness: 0.2
-    - _WaterColorNoiseStrength: 0.75
+    - _WaterColorNoiseBrightness: 0.302
+    - _WaterColorNoiseStrength: 0.3
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.80817604, g: 1, b: 0.8508036, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 0.8490566, g: 0.3898184, b: 0.3898184, a: 1}
-    - _ShadowColor: {r: 0.5566038, g: 0.20303783, b: 0.20303783, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowColor: {r: 0.084905684, g: 0.024430407, b: 0.024430407, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _WorldToMainLightMatrix: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
