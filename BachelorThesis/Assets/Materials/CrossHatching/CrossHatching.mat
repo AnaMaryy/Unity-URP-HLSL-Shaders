@@ -111,8 +111,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Ambient: 0.234
-    - _AmbientIntensity: 0.35
+    - _Ambient: 0.274
+    - _AmbientIntensity: 0.545
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -122,7 +122,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 2.56
+    - _DiffuseIntensity: 1.9
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -130,11 +130,12 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineWidth: 1.4
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimIntensity: 5.69
-    - _Shininess: 0.1
+    - _RimIntensity: 3.4
+    - _Shininess: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _Specular: 0
@@ -149,11 +150,12 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 0.9226908, b: 0.08176094, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HatchColor: {r: 1, g: 0, b: 0, a: 1}
+    - _HatchColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0.41463423, g: 0, b: 1, a: 1}
     - _Repeat: {r: 20, g: 20, b: 1, a: 1}
-    - _RimColor: {r: 0.51477027, g: 0, b: 0.6886792, a: 1}
+    - _RimColor: {r: 0.6670775, g: 0, b: 0.8962264, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SpecularColor: {r: 1, g: 0.033018887, b: 0.033018887, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tilling: {r: 10, g: 10, b: 10, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8790273721632115346

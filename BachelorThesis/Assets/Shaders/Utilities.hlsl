@@ -185,3 +185,15 @@ void Unity_NormalFromHeight_Tangent_float(float In, float Strength, float3 Posit
     Out = normalize(TangentMatrix[2].xyz - (Strength * surfGrad));
     Out = TransformWorldToTangent(Out, TangentMatrix);
 }
+
+float4 TriplanarSampleWorldPos(Texture2D Texture, SamplerState Sampler, float3 Position, float3 Normal, float Tile,
+                               float Blend)
+{
+    float3 Node_UV = Position * Tile;
+    float3 Node_Blend = pow(abs(Normal), Blend);
+    Node_Blend /= dot(Node_Blend, 1.0);
+    float4 Node_X = SAMPLE_TEXTURE2D(Texture, Sampler, Node_UV.zy);
+    float4 Node_Y = SAMPLE_TEXTURE2D(Texture, Sampler, Node_UV.xz);
+    float4 Node_Z = SAMPLE_TEXTURE2D(Texture, Sampler, Node_UV.xy);
+    return Node_X * Node_Blend.x + Node_Y * Node_Blend.y + Node_Z * Node_Blend.z;
+}
