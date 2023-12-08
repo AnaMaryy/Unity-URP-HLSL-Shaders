@@ -12,12 +12,14 @@ Shader "Thesis/StylizedWater2"
         _SurfaceColorNoiseCutoff("Surface Noise Cutoff", Range(0, 1)) = 0.777 // to toonify
         _FoamDistance("Foam Distance", Range(0, 1)) = 0.4
         _FoamColor("Foam Color", Color) = (1,1,1,1)
+        _FoamSmoothStepBlend("Foam Smooth Step Blend" , float) = 0.001
 
         [Header(Animation)]
         _UvScrollSpeed("Uv Scroll Speed", Vector) = (0.05, 0.05, 0, 0)
         _WavesDistortionTex("Waves Distortion Texture", 2D) = "white" {}
         // Control to multiply the strength of the distortion.
         _WaveDistortionAmount("Wave Distortion Amount", Range(0, 1)) = 0.5
+        _VertexYMovementAmount("Vertex Y Movement Amount", Range(0,10)) = 0
 
     }
 
@@ -40,6 +42,8 @@ Shader "Thesis/StylizedWater2"
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Assets/Shaders/Utilities.hlsl"
+
 
             //texture samplers
             TEXTURE2D(_SurfaceColorNoise);
@@ -56,11 +60,13 @@ Shader "Thesis/StylizedWater2"
             float _SurfaceColorNoiseCutoff;
             float _FoamDistance;
             float4 _FoamColor;
+            float _FoamSmoothStepBlend;
 
             // animation
             float2 _UvScrollSpeed;
             float4 _WavesDistortionTex_ST;
             float _WavesDistortionAmount;
+            float _VertexYMovementAmount;
 
 
             CBUFFER_END
@@ -85,9 +91,25 @@ Shader "Thesis/StylizedWater2"
 
             Varyings vert(Attributes IN)
             {
+                float noiseOne;
+                float noiseTwo;
+                Unity_SimpleNoise_float(IN.uv, 100, noiseOne);
+                Unity_SimpleNoise_float(IN.uv, 50, noiseTwo);
+
+                //IN.positionOS +=float4( IN.normalOS * noise *IN.uv.x *_UvScrollSpeed.x * _Time.y , IN.positionOS.a); // Distort along the normal direction
+                // IN.positionOS += float4(cross(IN.normalOS, float3(0, 0, 1)) * noise * _UvScrollSpeed.y, IN.positionOS.a);
+                IN.positionOS.y += sin(noiseOne +_Time.y) *_VertexYMovementAmount;
+                //IN.positionOS.y += noiseTwo* sin(_Time.y);
+
                 Varyings OUT;
+
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+
+
+                // Distort along a tangent direction
+
+
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
                 OUT.screenPosition = ComputeScreenPos(OUT.positionHCS);
@@ -125,10 +147,17 @@ Shader "Thesis/StylizedWater2"
                 // surface color noise
                 float surfaceNoiseSample = SAMPLE_TEXTURE2D(_SurfaceColorNoise, sampler_SurfaceColorNoise, uvWithNoise).
                     r;
-                float surfaceNoise = surfaceNoiseSample > surfaceNoiseCutoff ? surfaceNoiseSample : 0;
-                float4 foamColor = surfaceNoise * _FoamColor;
+                // float surfaceNoise = surfaceNoiseSample > surfaceNoiseCutoff ? 1 : 0;
+                float surfaceNoise = smoothstep(surfaceNoiseCutoff - _FoamSmoothStepBlend,
+                                                surfaceNoiseCutoff + _FoamSmoothStepBlend, surfaceNoiseSample);
 
-                return waterColor + foamColor;
+                float4 foamColor = _FoamColor * surfaceNoise;
+
+                //combine the colors -> alpha blend
+                float3 finalColor = (foamColor.rgb * foamColor.a) + (waterColor.rgb * (1 - foamColor.a));
+                float alpha = foamColor.a + waterColor.a * (1 - foamColor.a);
+                // return waterColor + foamColor;
+                return half4(finalColor, alpha);
             }
             ENDHLSL
         }
