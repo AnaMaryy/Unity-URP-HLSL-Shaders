@@ -115,19 +115,19 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1.55
+    - _OutlineWidth: 2.21
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimAmount: 0.716
-    - _RimThreshold: 0.1
-    - _ShadowStep: 0.16
-    - _ShadowStepSmooth: 0
+    - _RimAmount: 0.697
+    - _RimThreshold: 0.215
+    - _ShadowStep: 0.557
+    - _ShadowStepSmooth: 0.322
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularStep: 0.5
-    - _SpecularStepSmooth: 0.01
+    - _SpecularStep: 0.522
+    - _SpecularStepSmooth: 0.332
     - _SrcBlend: 1
     - _Surface: 0
     - _ToonBandsNumber: 2

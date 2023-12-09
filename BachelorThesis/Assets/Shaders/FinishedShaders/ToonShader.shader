@@ -1,8 +1,5 @@
-// This shader draws a texture on the mesh.
-Shader "Thesis/ToonBase"
+Shader "Thesis/ToonShader"
 {
-    // The _BaseMap variable is visible in the Material's Inspector, as a field
-    // called Base Map.
     Properties
     {
         [Header(Base Toon Settings)]
@@ -32,7 +29,6 @@ Shader "Thesis/ToonBase"
         _OutlineWidth ("OutlineWidth", Range(0.0, 10)) = 0.15
         _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
-
     }
 
     SubShader
@@ -41,10 +37,7 @@ Shader "Thesis/ToonBase"
         {
             "RenderType" = "Opaque"
             "RenderPipeline" = "UniversalRenderPipeline"
-            //"PassFlags" = "OnlyDirectional" //restrict lighting data only to the directional light
         }
-
-
 
         Pass
         {
@@ -57,15 +50,8 @@ Shader "Thesis/ToonBase"
             #pragma vertex vert
             #pragma fragment frag
 
-            // Universal Render Pipeline keywords
-            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-            // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
-            // #pragma multi_compile _ _SHADOWS_SOFT
-
-
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-
 
             struct Attributes
             {
@@ -76,7 +62,6 @@ Shader "Thesis/ToonBase"
 
             struct Varyings
             {
-                //position of the vertex after being transformed into projection space || system value
                 float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
@@ -84,14 +69,14 @@ Shader "Thesis/ToonBase"
                 float3 viewDirWS : TEXCOORD2;
             };
 
-            TEXTURE2D(_BaseMap); // declare _BaseTexture as a Texture2D object
-            SAMPLER(sampler_BaseMap); // declare sampler for _BaseTexture
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
 
 
-            // make variabled SRP Batcher compatible -> SRP Batcher is a draw call optimization
             CBUFFER_START(UnityPerMaterial)
-            float4 _BaseMap_ST; //ST -> necessary for tilling to work
+            float4 _BaseMap_ST;
             half4 _BaseColor;
+
             //shadow
             float _ShadowStep;
             float _ShadowStepSmooth;
@@ -103,14 +88,12 @@ Shader "Thesis/ToonBase"
 
             //ambient
             float4 _AmbientColor;
+
             //rim
             float4 _RimColor;
             float _RimAmount;
             float _RimThreshold;
-
-
             CBUFFER_END
-
 
             Varyings vert(Attributes IN)
             {
@@ -130,12 +113,7 @@ Shader "Thesis/ToonBase"
                 float3 normal = normalize(IN.normalWS);
                 float4 lightPos = normalize(_MainLightPosition);
                 float3 viewDir = normalize(IN.viewDirWS);
-
-                // float4 shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
-                // Light mainLight = GetMainLight(shadowCoord);
-
-
-                //general calculations
+                
                 float NdotL = dot(normal, lightPos);
                 float3 halfVector = normalize(lightPos + viewDir);
                 float NdotH = dot(normal, halfVector);
@@ -143,8 +121,8 @@ Shader "Thesis/ToonBase"
 
 
                 //blinn phong lighting toonified
-
                 float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
+
                 //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
 
                 float4 light = toonlight * _MainLightColor; //* recieveShadow;
@@ -159,7 +137,6 @@ Shader "Thesis/ToonBase"
                 float4 rim = rimIntensity * _RimColor;
 
 
-                //float4 base_texture = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv) * _BaseColor;
                 float4 base_texture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
                 float4 final_color = base_texture * (_AmbientColor + light + specular + rim);
@@ -177,9 +154,7 @@ Shader "Thesis/ToonBase"
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "Assets/Shaders/Utilities.hlsl"
-
-
+            
             struct Attributes
             {
                 float4 position : POSITION;
