@@ -26,7 +26,7 @@ Shader "Thesis/ToonShader"
         _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
         [Header(Outline)]
-        _OutlineWidth ("OutlineWidth", Range(0.0, 10)) = 0.15
+        _OutlineWidth ("OutlineWidth", Range(0.0, 1)) = 0.15
         _OutlineColor ("OutlineColor", Color) = (0.0, 0.0, 0.0, 1)
 
     }
@@ -113,7 +113,7 @@ Shader "Thesis/ToonShader"
                 float3 normal = normalize(IN.normalWS);
                 float4 lightPos = normalize(_MainLightPosition);
                 float3 viewDir = normalize(IN.viewDirWS);
-                
+
                 float NdotL = dot(normal, lightPos);
                 float3 halfVector = normalize(lightPos + viewDir);
                 float NdotH = dot(normal, halfVector);
@@ -121,28 +121,28 @@ Shader "Thesis/ToonShader"
 
 
                 //blinn phong lighting toonified
-                float toonlight = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
+                float toonLight
+                = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
 
                 //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
 
-                float4 light = toonlight * _MainLightColor; //* recieveShadow;
+                float4 light = toonLight * _MainLightColor; //* recieveShadow;
                 //specular
-                float specularNH = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
+                float specularValue = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
                                               (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
-                float4 specular = specularNH * _SpecularColor;
+                float4 specular = specularValue * _SpecularColor;
                 //rim 
-                float4 rimDot = 1 - NdotV;
+                float4 rimDot = 1 - NdotV; 
                 float rimIntensity = rimDot * pow(NdotL, _RimThreshold);
-                rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimIntensity); //toonifiy rim
+                rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimIntensity); 
                 float4 rim = rimIntensity * _RimColor;
 
+                float4 baseTexture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
-                float4 base_texture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
+                float4 finalColor = baseTexture * (_AmbientColor + light + specular + rim);
+                finalColor.a = 1;
 
-                float4 final_color = base_texture * (_AmbientColor + light + specular + rim);
-                final_color.a = 1;
-
-                return final_color;
+                return finalColor;
             }
             ENDHLSL
         }
@@ -154,7 +154,7 @@ Shader "Thesis/ToonShader"
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            
+
             struct Attributes
             {
                 float4 position : POSITION;

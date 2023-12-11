@@ -6,8 +6,6 @@ namespace Code {
 
 		public float speed = 5.0f;
 		public float sensitivity = 5.0f;
-		public float shiftSpeedUp = 5f;
-
 		private float finalSpeed;
 
 		void Start() {
@@ -16,14 +14,18 @@ namespace Code {
 
 		void Update() {
 			var deltaTime = Time.deltaTime;
+			var position = transform.position;
 
 			finalSpeed = speed;
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				finalSpeed += shiftSpeedUp;
+				position -= transform.up * (finalSpeed * deltaTime);
+			}
+
+			if (Input.GetKey(KeyCode.Space)) {
+				position += transform.up * (finalSpeed * deltaTime);
 			}
 
 			// Move the camera
-			var position = transform.position;
 			position += transform.forward * (Input.GetAxis("Vertical") * finalSpeed * deltaTime);
 			position += transform.right * (Input.GetAxis("Horizontal") * finalSpeed * deltaTime);
 			transform.position = position;

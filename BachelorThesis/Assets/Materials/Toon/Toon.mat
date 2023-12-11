@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonWood
+  m_Name: Toon
   m_Shader: {fileID: 4800000, guid: 4ca71512bf23455f9c3cdc941ee672b3, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -115,31 +115,31 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.138
+    - _OutlineWidth: 0.413
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimAmount: 0.413
-    - _RimThreshold: 0.119
-    - _ShadowStep: 0.388
-    - _ShadowStepSmooth: 0.094
+    - _RimAmount: 1
+    - _RimThreshold: 0
+    - _ShadowStep: 0.66
+    - _ShadowStepSmooth: 0.327
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularStep: 0.564
-    - _SpecularStepSmooth: 0.376
+    - _SpecularStep: 0.148
+    - _SpecularStepSmooth: 0.379
     - _SrcBlend: 1
     - _Surface: 0
     - _ToonBandsNumber: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _AmbientColor: {r: 0.46226418, g: 0.2961661, b: 0.1555417, a: 1}
-    - _BaseColor: {r: 0.4245283, g: 0.33107072, b: 0.21092913, a: 1}
+    - _AmbientColor: {r: 0.09433961, g: 0.0299632, b: 0.0299632, a: 1}
+    - _BaseColor: {r: 0.8, g: 0.67058825, b: 0.9529412, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.6698113, g: 0.54764444, b: 0.54764444, a: 1}
+    - _RimColor: {r: 1, g: 0.9685534, b: 0.9685534, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_BuildTextureStacks: []
