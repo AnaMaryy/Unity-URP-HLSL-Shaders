@@ -7,22 +7,19 @@ Shader "Thesis/ToonShader"
         _BaseColor("Color", Color) = (0.5,0,0.5,1)
 
         [Header(Shadow Settings)]
-        _ShadowStep("ShadowStep", Range(0,1)) =0.5
-        _ShadowStepSmooth("ShadowStepSmooth", Range(0,1)) = 0.1
+        _ToonRamp("Toon Ramp", 2D) = "white" {}
 
         [Header(Ambient Light)]
-        [HDR]
         _AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
 
         [Header(Specular light)]
-        [HDR]
-        _SpecularColor("Specular Color", Color) = (0.9,0.9,0.9,1)
-        _SpecularStep ("SpecularStep", Range(0, 1)) = 0.5
-        _SpecularStepSmooth ("SpecularStepSmooth", Range(0, 1)) = 0.01
+        _SpecularColor("Specular Color", Color) = (1,1,1,1)
+        _SpecularStep ("SpecularStep", Range(0, 1)) = 0.25
+        _SpecularStepSmooth ("SpecularStepSmooth", Range(0, 1)) = 0.1
 
         [Header(Rim Light)]
         _RimColor("Rim Color", Color) = (1,1,1,1)
-        _RimAmount("Rim Amount", Range(0, 1)) = 0.716
+        _RimAmount("Rim Amount", Range(0, 1)) = 0.
         _RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
 
         [Header(Outline)]
@@ -72,15 +69,15 @@ Shader "Thesis/ToonShader"
             TEXTURE2D(_BaseMap);
             SAMPLER(sampler_BaseMap);
 
+            TEXTURE2D(_ToonRamp);
+            SAMPLER(sampler_ToonRamp);
+
 
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
+            float4 _ToonRamp_ST;
             half4 _BaseColor;
-
-            //shadow
-            float _ShadowStep;
-            float _ShadowStepSmooth;
-
+            
             //specular
             float4 _SpecularColor;
             float _SpecularStep;
@@ -98,7 +95,7 @@ Shader "Thesis/ToonShader"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-                OUT.positionCS = TransformObjectToHClip(IN.position.xyz); //transforms position to clip space
+                OUT.positionCS = TransformObjectToHClip(IN.position.xyz); 
                 OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
@@ -121,22 +118,21 @@ Shader "Thesis/ToonShader"
 
 
                 //blinn phong lighting toonified
-                float toonLight
-                = smoothstep(_ShadowStep - _ShadowStepSmooth, _ShadowStep + _ShadowStepSmooth, NdotL);
-
-                //float recieveShadow =(toonlight >= 0) ? mainLight.shadowAttenuation : 1;
-
-                float4 light = toonLight * _MainLightColor; //* recieveShadow;
+                float toonLight = 1 - SAMPLE_TEXTURE2D(_ToonRamp, sampler_ToonRamp, float2(NdotL, IN.uv.y));
+                float4 light = toonLight * _MainLightColor;
+                
                 //specular
                 float specularValue = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
-                                              (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
+                                                 (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
                 float4 specular = specularValue * _SpecularColor;
-                //rim 
-                float4 rimDot = 1 - NdotV; 
-                float rimIntensity = rimDot * pow(NdotL, _RimThreshold);
-                rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimIntensity); 
-                float4 rim = rimIntensity * _RimColor;
+                
+                //rim
+                float rimLighting = saturate(1 - NdotV);
+                float rimCutOff = pow(NdotL, _RimThreshold) * rimLighting;
+                float rimToonified = smoothstep(_RimAmount - 0.03, _RimAmount + 0.03, rimCutOff);
+                float4 rim = rimToonified * _RimColor;
 
+                //calculation of final color
                 float4 baseTexture = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
                 float4 finalColor = baseTexture * (_AmbientColor + light + specular + rim);
@@ -176,15 +172,12 @@ Shader "Thesis/ToonShader"
 
             Varyings vert(Attributes IN)
             {
-                //todo: ana understand this lmao 
                 Varyings OUT;
 
                 OUT.positionCS = TransformObjectToHClip(IN.position);
-                // always have to do-> set the postiiton in the clip space
-                //returns the normal in the worls coordinates
-                float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, IN.normal)); //transform normal into eye space
-                // projection: from world -> view, which is our clipping space, so we get a flat outline
-                float2 offset = TransformWViewToHClip(norm.xyz);
+                float3 normalWorld = TransformObjectToWorld(IN.normal);
+                float3 normalview = normalize(TransformWorldToView(normalWorld));
+                float2 offset = TransformWViewToHClip(normalview.xyz);
 
                 OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
                 OUT.color = _OutlineColor;

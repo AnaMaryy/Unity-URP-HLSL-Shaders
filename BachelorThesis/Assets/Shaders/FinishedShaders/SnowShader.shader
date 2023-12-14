@@ -24,8 +24,6 @@ Shader "Thesis/SnowShader"
         _Snow_Color_Noise_Size("Snow Color Noise Size", Float) = 63.8
         _Snow_Color_Noise_Strength("Snow Color Noise Strength", Range(0, 1)) = 0.38
     }
-
-
     SubShader
     {
         Tags
