@@ -77,7 +77,7 @@ Shader "Thesis/ToonShader"
             float4 _BaseMap_ST;
             float4 _ToonRamp_ST;
             half4 _BaseColor;
-            
+
             //specular
             float4 _SpecularColor;
             float _SpecularStep;
@@ -95,7 +95,7 @@ Shader "Thesis/ToonShader"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-                OUT.positionCS = TransformObjectToHClip(IN.position.xyz); 
+                OUT.positionCS = TransformObjectToHClip(IN.position.xyz);
                 OUT.positionWS = TransformObjectToWorld(IN.position.xyz);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normal);
                 OUT.viewDirWS = GetWorldSpaceNormalizeViewDir(OUT.positionWS);
@@ -120,12 +120,11 @@ Shader "Thesis/ToonShader"
                 //blinn phong lighting toonified
                 float toonLight = 1 - SAMPLE_TEXTURE2D(_ToonRamp, sampler_ToonRamp, float2(NdotL, IN.uv.y));
                 float4 light = toonLight * _MainLightColor;
-                
                 //specular
                 float specularValue = smoothstep((1 - _SpecularStep * 0.05) - _SpecularStepSmooth * 0.05,
                                                  (1 - _SpecularStep * 0.05) + _SpecularStepSmooth * 0.05, NdotH);
                 float4 specular = specularValue * _SpecularColor;
-                
+
                 //rim
                 float rimLighting = saturate(1 - NdotV);
                 float rimCutOff = pow(NdotL, _RimThreshold) * rimLighting;
@@ -174,6 +173,7 @@ Shader "Thesis/ToonShader"
             {
                 Varyings OUT;
 
+                // IN.position.xyz += IN.normal * _OutlineWidth;
                 OUT.positionCS = TransformObjectToHClip(IN.position);
                 float3 normalWorld = TransformObjectToWorld(IN.normal);
                 float3 normalview = normalize(TransformWorldToView(normalWorld));
@@ -181,7 +181,6 @@ Shader "Thesis/ToonShader"
 
                 OUT.positionCS.xy += offset * OUT.positionCS.z * _OutlineWidth;
                 OUT.color = _OutlineColor;
-
                 return OUT;
             }
 

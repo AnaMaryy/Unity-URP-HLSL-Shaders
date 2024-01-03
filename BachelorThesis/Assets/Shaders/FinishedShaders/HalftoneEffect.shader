@@ -168,11 +168,8 @@ Shader "Thesis/HalftroneEffect"
 
                 // final steps
                 float4 patternsSmooth;
-                Unity_Smoothstep_float4(remap, remapShadow, pattern, patternsSmooth); //todo: here is the problem
+                Unity_Smoothstep_float4(remap, remapShadow, pattern, patternsSmooth); 
                 float3 finalColor = lerp(rgb, mainTexture, patternsSmooth);
-
-                //return mainTexture*pattern ; // works
-
 
                 return half4(finalColor.r, finalColor.g, finalColor.b, 1);
             }

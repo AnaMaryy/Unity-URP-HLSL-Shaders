@@ -33,7 +33,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CrossHatchingTexture1:
-        m_Texture: {fileID: 2800000, guid: 380a2d46fa7c2a24991d5e4dc1a83095, type: 3}
+        m_Texture: {fileID: 2800000, guid: 45027f62d2457894c8fcda9a2eb47358, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CrossHatchingTexture2:
@@ -111,8 +111,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Ambient: 0.274
-    - _AmbientIntensity: 0.545
+    - _Ambient: 0.229
+    - _AmbientIntensity: 0.213
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -122,7 +122,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 1.9
+    - _DiffuseIntensity: 1.06
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -130,12 +130,12 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1.4
+    - _OutlineWidth: 0.17
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimIntensity: 3.4
-    - _Shininess: 0
+    - _RimIntensity: 9.13
+    - _Shininess: 0.072
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _Specular: 0
@@ -150,13 +150,13 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 0.9226908, b: 0.08176094, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HatchColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineColor: {r: 0.41463423, g: 0, b: 1, a: 1}
+    - _HatchColor: {r: 0, g: 0.05882353, b: 0.33333334, a: 1}
+    - _OutlineColor: {r: 0, g: 0.05882353, b: 0.33333334, a: 1}
     - _Repeat: {r: 20, g: 20, b: 1, a: 1}
-    - _RimColor: {r: 0.6670775, g: 0, b: 0.8962264, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Tilling: {r: 10, g: 10, b: 10, a: 1}
+    - _Tilling: {r: 20, g: 20, b: 20, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8790273721632115346
 MonoBehaviour:

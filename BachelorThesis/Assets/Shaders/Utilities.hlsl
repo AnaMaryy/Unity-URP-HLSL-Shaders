@@ -87,7 +87,13 @@ void Unity_Voronoi_float(float2 UV, float AngleOffset, float CellDensity, out fl
         }
     }
 }
-
+void Unity_RadialShear_float(float2 UV, float2 Center, float Strength, float2 Offset, out float2 Out)
+{
+    float2 delta = UV - Center;
+    float delta2 = dot(delta.xy, delta.xy);
+    float2 delta_offset = delta2 * Strength;
+    Out = UV + float2(delta.y, -delta.x) * delta_offset + Offset;
+}
 void Unity_Smoothstep_float4(float4 Edge1, float4 Edge2, float4 In, out float4 Out)
 {
     Out = smoothstep(Edge1, Edge2, In);

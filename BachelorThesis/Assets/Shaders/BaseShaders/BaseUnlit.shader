@@ -7,8 +7,6 @@ Shader "Thesis/BaseUnlit"
         [MainColor] _Color("Base Color", Color) = (1, 1, 1, 1)
 
     }
-
-
     SubShader
     {
         Tags
@@ -24,11 +22,10 @@ Shader "Thesis/BaseUnlit"
             #pragma fragment frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            
-            //texture samplers
+
             TEXTURE2D(_BaseMap);
             SAMPLER(sampler_BaseMap);
-            
+
             CBUFFER_START(UnityPerMaterial)
             half4 _Color;
             float4 _BaseMap_ST;

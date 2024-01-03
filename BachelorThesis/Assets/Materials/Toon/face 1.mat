@@ -37,23 +37,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRamp:
-        m_Texture: {fileID: 2800000, guid: cd25f59bcc723344db19105653339989, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6b8c4eee7f380f74285c42451ea69642, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _EdgeThickness: 0.5
     - _FalloffPower: 1
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.04
     - _RimAmount: 0.716
     - _RimThreshold: 0.1
     - _ShadowStep: 0.5
     - _ShadowStepSmooth: 0.1
-    - _SpecularStep: 0.5
-    - _SpecularStepSmooth: 0.01
+    - _SpecularStep: 0.51
+    - _SpecularStepSmooth: 0.8
     m_Colors:
-    - _AmbientColor: {r: 0.8, g: 0.8, b: 1, a: 1}
-    - _BaseColor: {r: 0.8679245, g: 0.81606734, b: 0.81606734, a: 1}
+    - _AmbientColor: {r: 1, g: 1, b: 1, a: 0.5882353}
+    - _BaseColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

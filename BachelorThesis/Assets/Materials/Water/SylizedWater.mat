@@ -106,7 +106,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 2.78
+    - _DepthMaxDistance: 10
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -120,6 +120,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
+    - _RadialSheerStrength: 11.86
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -128,15 +129,19 @@ Material:
     - _Surface: 0
     - _SurfaceColorNoiseCutoff: 0.739
     - _VertexYMovementAmount: 0
-    - _WaterDepthIntersectPower: 4.65
+    - _VoronoiCellDensitiy: 3
+    - _VoronoiSpeed: 10
+    - _WaterDepthIntersectPower: 4.8
     - _WaveDistortionAmount: 0.213
+    - _WaveFrequency: 20
+    - _WaveSpeed: 3.5
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorDeepWater: {r: 0.16216812, g: 0.08036668, b: 0.3962264, a: 0.749}
-    - _ColorShallowWater: {r: 0.43614176, g: 0.1273585, b: 1, a: 0.725}
+    - _ColorDeepWater: {r: 0.087516285, g: 0.43621975, b: 0.5566038, a: 0.749}
+    - _ColorShallowWater: {r: 0.3374569, g: 0.8584906, b: 0.84870446, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0.9009434, b: 0.9009434, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

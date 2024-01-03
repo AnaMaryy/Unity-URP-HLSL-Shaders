@@ -3,7 +3,6 @@ Shader "Thesis/BaseLit"
     Properties
     {
         [Header(Base Lit Settings)]
-
         _MainTex ("Texture", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "white" {}
         _BaseColor("Base Color", color) = (1,1,1,1)
@@ -39,14 +38,12 @@ Shader "Thesis/BaseLit"
 
             struct v2f
             {
-                // float4 positionOS :SV_POSITION;
                 float4 positionHCS : SV_POSITION;
                 float3 normalWS : NORMAL;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
                 float3 viewDirWS : TEXCOORD2;
-                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 3);
-                //3 -> which texcoord is used //SH -> spherical harmonics
+                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 3); //3 -> which texcoord is used //SH -> spherical harmonics
                 float4 tangent : TEXCOORD4;
                 float3 bitangent : TEXCOORD5;
             };

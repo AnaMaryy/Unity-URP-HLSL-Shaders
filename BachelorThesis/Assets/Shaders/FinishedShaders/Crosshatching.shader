@@ -14,6 +14,8 @@ Shader "Thesis/Crosshatching"
         _RimIntensity("Rim Intensity", Range(0,10))=1
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _Shininess("Shininess (Specular)", Range(0,0.1))=1
+        _SpecularColor("Specular Color", Color) = (1,1,1,1)
+
 
         [Header(Hatching)]
         _HatchColor("Hatch Color", Color) = (1,1,1,1)
@@ -61,7 +63,7 @@ Shader "Thesis/Crosshatching"
             SAMPLER(sampler_CrossHatchingTexture6);
 
             CBUFFER_START(UnityPerMaterial)
-            half4 _HatchColor, _RimColor;
+            half4 _HatchColor, _RimColor, _SpecularColor;
             float4 _CrossHatchingTexture1_ST, _CrossHatchingTexture2_ST, _CrossHatchingTexture3_ST;
             float4 _CrossHatchingTexture4_ST, _CrossHatchingTexture5_ST, _CrossHatchingTexture6_ST;
             float4 _Tilling;
@@ -119,6 +121,7 @@ Shader "Thesis/Crosshatching"
 
                 float specular = saturate(dot(normal, halfVec));
                 specular = dot(specular, _Shininess);
+                float4 specularColor = specular * _SpecularColor;
 
                 //final light calculation
                 float brightness = diffuse * _DiffuseIntensity + rim + ambient + specular;
@@ -163,9 +166,8 @@ Shader "Thesis/Crosshatching"
                     half4 texture6 = SAMPLE_TEXTURE2D(_CrossHatchingTexture6, sampler_CrossHatchingTexture6, IN.uv);
                     hatchValue = texture6;
                 }
-               // return lerp( lerp( _HatchColor, float4(1,1,1,1), hatchValue.r ), hatchValue, .5 );
-
-                return half4(rimColor.rgb + (hatchValue.rgba + _HatchColor.rgba* brightness), 1);
+                
+                return half4(rimColor.rgb + specularColor.rgb+ hatchValue.rgb + _HatchColor.rgb, 1);
             }
             ENDHLSL
         }
