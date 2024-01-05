@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Halftone1 1
+  m_Name: FishBody
   m_Shader: {fileID: -6465566751694194690, guid: 20be2e606198fd141b2c6f603a3a72df, type: 3}
   m_ValidKeywords:
   - _USE_SCREEN_SPACE
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4f9b30a4491a3ac41afd9d50367efdf6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -104,7 +104,7 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _Circle_Density: 10.6
+    - _Circle_Density: 21.32
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -113,11 +113,11 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Falloff_Threshold: 1.28
+    - _Falloff_Threshold: 1.13
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Lit_Treshold: 1.1
+    - _Lit_Treshold: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -125,23 +125,23 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 1.43
-    - _Shading_Multiplier: -0.88
+    - _Shading_Multiplier: 0.08
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _Softness: 0.297
+    - _Softness: 0.32
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _USE_SCREEN_SPACE: 1
     - _USE_VORONOI_PATTERN: 1
-    - _Voronoi_Angle_Offset: 2
+    - _Voronoi_Angle_Offset: 2.23
     - _Voronoi_Cell_Density: 10
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Color: {r: 1, g: 0.6179246, b: 0.87518805, a: 1}
-    - _Circle_Color: {r: 0.4339623, g: 0.13305448, b: 0.3659952, a: 1}
+    - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Circle_Color: {r: 0.52480626, g: 0.4306396, b: 0.7169812, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
