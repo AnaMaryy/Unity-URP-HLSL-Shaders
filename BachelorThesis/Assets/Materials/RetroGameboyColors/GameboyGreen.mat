@@ -109,7 +109,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GridSpacing: 23.3
+    - _GridSpacing: 376.29
     - _GridThickness: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -127,6 +127,6 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GridColor: {r: 0.74801093, g: 0.8396226, b: 0.35380316, a: 1}
+    - _GridColor: {r: 0.81265646, g: 0.8490566, b: 0.65281236, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
