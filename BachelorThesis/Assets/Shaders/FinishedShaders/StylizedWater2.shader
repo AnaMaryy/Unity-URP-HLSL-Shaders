@@ -146,8 +146,7 @@ Shader "Thesis/StylizedWater2"
                 float2 uvWithNoise = float2((IN.uv.x + _Time.y * _UvScrollSpeed.x),
                                             (IN.uv.y + _Time.y * _UvScrollSpeed.y));
                 // surface foam  color noise
-                float surfaceNoiseSample = SAMPLE_TEXTURE2D(_SurfaceColorNoise, sampler_SurfaceColorNoise, uvWithNoise).
-                    r;
+                float surfaceNoiseSample = SAMPLE_TEXTURE2D(_SurfaceColorNoise, sampler_SurfaceColorNoise, uvWithNoise).r;
 
                 float surfaceNoise = smoothstep(foamDepthDifference - _FoamSmoothStepBlend,
                                                 foamDepthDifference + _FoamSmoothStepBlend, surfaceNoiseSample);

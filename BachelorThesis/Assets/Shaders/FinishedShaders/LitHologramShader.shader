@@ -12,13 +12,14 @@ Shader "Thesis/LitHologramShader"
         _NormalIntensity("Normal Intensity", Range(0,1))=0
 
         [Header(Hologram Settings)]
+        _HologramTexture("Hologram Texture", 2D) = "white" {}
         _FresnelColor("Fresnel Color", Color) = (1,1,1,1)
         _FresnelIntensity("Fresnel Intensity", Range(0,10)) = 0
         _FresnelRamp("Fresnel Ramp", Range(0,10))= 0
         _ScrollSpeed("Scroll Speed", Range(0,10)) = 0.06
 
         _GlitchStrength("Glith Strength", Range(0,10)) = 0.5
-        
+
     }
     SubShader
     {
@@ -66,10 +67,12 @@ Shader "Thesis/LitHologramShader"
 
             sampler2D _MainTex;
             sampler2D _NormalMap;
+            sampler2D _HologramTexture;
 
 
             CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
+            float4 _HologramTexture_ST;
             float4 _NormalMap_ST;
             float _NormalIntensity;
             float4 _BaseColor;
@@ -134,8 +137,11 @@ Shader "Thesis/LitHologramShader"
 
                 // scrolling texture
                 float speedY = i.positionWS.y + (_ScrollSpeed * _Time);
-                half4 mainTex = tex2D(_MainTex, float2(i.uv.x, speedY));
-                half4 finalColor = mainTex + fresnelColor;
+                half4 mainTex = tex2D(_MainTex, i.uv);
+                half4 hologramTex = tex2D(_HologramTexture, float2(i.uv.x, speedY));
+
+                //half4 mainTex = tex2D(_MainTex, float2(i.uv.x, speedY));
+                half4 finalColor = mainTex + fresnelColor + hologramTex;
 
 
                 InputData inputData = (InputData)0; //create a 0 and cast is

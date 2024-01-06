@@ -12,9 +12,9 @@ Shader "Thesis/BendingLit"
         _NormalIntensity("Normal Intensity", Range(0,1))=1
 
         [Header(Bending Settings)]
-        _CurvatureY("Curvature Y", Range(-0.01,0.01))= 0
-        _CurvatureX("Curvature X", Range(-0.01,0.01))= 0
-        _CurvatureZ("Curvature Z", Range(-0.01,0.01))= 0
+        _CurvatureY("Curvature Y", Range(-0.01,0.15))= 0
+        _CurvatureX("Curvature X", Range(-0.01,0.15))= 0
+        _CurvatureZ("Curvature Z", Range(-0.01,0.15))= 0
     }
     SubShader
     {
