@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GirlSkin
-  m_Shader: {fileID: -6465566751694194690, guid: 20be2e606198fd141b2c6f603a3a72df, type: 3}
+  m_Shader: {fileID: 4800000, guid: 38ca567c4d164b9e95aa576c712bc905, type: 3}
   m_ValidKeywords:
   - _USE_SCREEN_SPACE
   - _USE_VORONOI_PATTERN
@@ -36,7 +36,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 489e37481633b6a439c4bac4dae13b7f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
@@ -79,6 +79,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PatternTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Pattern_Texture:
         m_Texture: {fileID: 2800000, guid: b56101eec82209e419fad0bc6fff6584, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -104,6 +108,7 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _CircleDensity: 106.2
     - _Circle_Density: 31.84
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -113,10 +118,12 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FalloffThreshold: 2.5
     - _Falloff_Threshold: 3.96
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _LitTreshold: 1
     - _Lit_Treshold: 2.52
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -125,6 +132,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 3.3
+    - _ShadingMultiplier: -1.66
     - _Shading_Multiplier: 0.9
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -134,6 +142,8 @@ Material:
     - _Surface: 0
     - _USE_SCREEN_SPACE: 1
     - _USE_VORONOI_PATTERN: 1
+    - _VoronoiAngleOffset: 0
+    - _VoronoiCellDensity: 5
     - _Voronoi_Angle_Offset: 2
     - _Voronoi_Cell_Density: 10
     - _WorkflowMode: 1
@@ -141,6 +151,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CircleColor: {r: 0, g: 0, b: 0, a: 1}
     - _Circle_Color: {r: 0.6320754, g: 0.5455137, b: 0.5277234, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

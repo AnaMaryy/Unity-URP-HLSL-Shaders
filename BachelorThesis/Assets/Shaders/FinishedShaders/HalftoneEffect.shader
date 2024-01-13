@@ -128,17 +128,7 @@ Shader "Thesis/HalftroneEffect"
                 diffuseLightAndCircleColor *= -1; // negate
 
                 rgb *= diffuseLight * _MainLightColor;
-
-                //remap values -> set shadow treshold 
-                float2 outMinMax = float2(_LitTreshold - _FalloffThreshold, _LitTreshold);
-                float2 inMinMax = float2(-1, 1);
-                float4 remap;
-                Unity_Remap_float4(diffuseLightAndCircleColor, inMinMax, outMinMax, remap);
-
-                //todo : check if theres a better way
-                float4 remapShadow = remap + _Softness;
-
-
+                
                 //adjust texture of dots to screen ratio; so it is not streched
                 float screenRatio = _ScreenParams.x / _ScreenParams.y;
                 float newY = IN.screenPos.y / screenRatio;
@@ -165,6 +155,14 @@ Shader "Thesis/HalftroneEffect"
                 pattern = SAMPLE_TEXTURE2D(_PatternTexture, sampler_PatternTexture, circleDensity);
                 #endif
 
+                 //remap values -> set shadow treshold 
+                float2 outMinMax = float2(_LitTreshold - _FalloffThreshold, _LitTreshold);
+                float2 inMinMax = float2(-1, 1);
+                float4 remap;
+                Unity_Remap_float4(diffuseLightAndCircleColor, inMinMax, outMinMax, remap);
+
+                //todo : check if theres a better way
+                float4 remapShadow = remap + _Softness;
 
                 // final steps
                 float4 patternsSmooth;
