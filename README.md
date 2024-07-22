@@ -25,6 +25,8 @@ Shading and highlighting an object with dots. <br>
 <img src="https://github.com/user-attachments/assets/75af8605-cda6-47fa-b048-637b0223ec58" width="500" />
 
 - **Holofoil shader**
+- <img width="369" alt="Unity_B6Ehi4eSdi" src="https://github.com/user-attachments/assets/adeb1950-a451-49c1-b360-1f58d2bc62b2">
+
 - **Lit Hologram Shader**
 - **Snow Shader**
 - **Stylized Water shader**
